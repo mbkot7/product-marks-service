@@ -13,8 +13,12 @@ import { storage } from '@/lib/storage';
 import { CodeDisplay } from './CodeDisplay';
 import { useToast } from '@/hooks/useToast';
 
-export function ProductMarksTable() {
-  const [productMarks, setProductMarks] = useState<ProductMarkDetail[]>([]);
+interface ProductMarksTableProps {
+  productMarks: ProductMarkDetail[];
+  onDataChange: (marks: ProductMarkDetail[]) => void;
+}
+
+export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTableProps) {
   const [showDialog, setShowDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const [bulkData, setBulkData] = useState('');
@@ -28,11 +32,7 @@ export function ProductMarksTable() {
   const [visibleCodes, setVisibleCodes] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
-  // Load data on component mount
-  useEffect(() => {
-    const marks = storage.getProductMarks();
-    setProductMarks(marks);
-  }, []);
+  // Component now receives data via props
 
   const parseBulkData = () => {
     if (!bulkData.trim()) {
@@ -117,7 +117,7 @@ export function ProductMarksTable() {
     setLoading(true);
     try {
       const newMarks = storage.addProductMarksBulk(newCodes);
-      setProductMarks([...productMarks, ...newMarks]);
+      onDataChange([...productMarks, ...newMarks]);
 
       setBulkData('');
       setParsedData([]);
@@ -158,7 +158,7 @@ export function ProductMarksTable() {
     try {
       const updatedMark = storage.updateProductMark(markId, editData);
       if (updatedMark) {
-        setProductMarks(productMarks.map(mark => 
+        onDataChange(productMarks.map(mark => 
           mark._id === markId ? updatedMark : mark
         ));
         setEditingRow(null);
@@ -185,7 +185,7 @@ export function ProductMarksTable() {
     try {
       const success = storage.deleteProductMark(markId);
       if (success) {
-        setProductMarks(productMarks.filter(mark => mark._id !== markId));
+        onDataChange(productMarks.filter(mark => mark._id !== markId));
         toast({
           title: "Success",
           description: "Product mark deleted successfully",
