@@ -268,7 +268,7 @@ export function ProductMarksTable() {
                 <DialogHeader>
                   <DialogTitle>Bulk Add Marks</DialogTitle>
                   <DialogDescription>
-                    Add codes (one per line). These will be added to the "Марка" column. The system will automatically detect the brand type based on the code format.
+                    Add codes (one per line). Numeric codes (like 241112010000000000000010124) are КМДМ, codes with \u001D are КМЧЗ. Codes go to "Марка" column, datamatrix is generated automatically.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6">

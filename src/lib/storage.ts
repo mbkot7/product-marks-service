@@ -58,9 +58,20 @@ export const storage = {
     
     const newMarks: ProductMarkDetail[] = [];
     
-    datamatrixes.forEach(datamatrix => {
-      // Extract brand from datamatrix (simplified logic)
-      const brand = datamatrix.substring(0, 13); // First 13 characters typically contain the brand
+    datamatrixes.forEach(inputCode => {
+      // Determine brand type based on content
+      const brandType: 'КМДМ' | 'КМЧЗ' = inputCode.includes('\\u001D') || inputCode.includes('\u001D') ? 'КМЧЗ' : 'КМДМ';
+      
+      // For КМДМ (numeric codes), the brand is the code itself
+      // For КМЧЗ (GS1 codes), extract the first part before GS1 separator
+      let brand: string;
+      if (brandType === 'КМДМ') {
+        brand = inputCode.trim(); // For numeric codes, use the whole code as brand
+      } else {
+        // For КМЧЗ, extract the GTIN part (usually first 14 digits after 01)
+        const match = inputCode.match(/^01(\d{14})/);
+        brand = match ? match[1] : inputCode.substring(0, 14);
+      }
       
       if (!existingBrands.has(brand)) {
         const newMark: ProductMarkDetail = {
@@ -68,9 +79,9 @@ export const storage = {
           product: '',
           barcode: '',
           supplierCode: '',
-          brandType: 'КМДМ', // Default brand type
-          brand,
-          datamatrix,
+          brandType,
+          brand, // This goes to "Марка" column
+          datamatrix: inputCode, // This goes to "Datamatrix" column
           status: 'В обороте',
           createdAt: new Date().toISOString(),
         };

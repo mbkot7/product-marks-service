@@ -29,7 +29,9 @@ function App() {
         return
       }
 
+      console.log('Starting PDF export...');
       const result = await PDFExportService.exportProductMarksToPDF(productMarks)
+      console.log('PDF export result:', result);
       
       if (result.success) {
         toast({
