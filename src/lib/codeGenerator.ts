@@ -183,17 +183,6 @@ export class CodeGenerator {
     return canvas.toDataURL('image/png');
   }
 
-  // Simple hash function for pattern generation
-  private static simpleHash(str: string): number {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32-bit integer
-    }
-    return Math.abs(hash);
-  }
-
   // Main method to generate appropriate code based on type
   static async generateCode(data: string, brandType: 'КМДМ' | 'КМЧЗ', size: number = 200): Promise<string> {
     if (brandType === 'КМДМ') {
