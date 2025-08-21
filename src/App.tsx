@@ -4,9 +4,10 @@ import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
-import { Download, FileText, Package, Trash2 } from 'lucide-react'
+import { Download, FileText, Package, Trash2, Link2 } from 'lucide-react'
 import { storage } from './lib/storage'
 import { PDFExportService } from './lib/pdfExport'
+import { createShareLink, extractStateFromLocation } from './lib/urlState'
 
 function App() {
   const { toast, toasts, removeToast } = useToast()
@@ -16,30 +17,35 @@ function App() {
   // Debug log to check if React is working
   console.log('App component loaded!')
   
+  // Load from URL state on first mount
+  useEffect(() => {
+    const fromUrl = extractStateFromLocation()
+    if (fromUrl && fromUrl.length > 0) {
+      storage.saveProductMarks(fromUrl)
+      setProductMarks(fromUrl)
+      toast({ title: 'Loaded from link', description: `Restored ${fromUrl.length} marks from the URL` })
+      // clean URL (remove ?s=...) but keep path
+      const clean = `${window.location.origin}${window.location.pathname}`
+      window.history.replaceState({}, '', clean)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
   // Update product marks when storage changes
   useEffect(() => {
     const handleStorageChange = () => {
       setProductMarks(storage.getProductMarks())
     }
     
-    // Also check periodically (for same-tab updates)
     const interval = setInterval(handleStorageChange, 500)
-    
-    return () => {
-      clearInterval(interval)
-    }
+    return () => clearInterval(interval)
   }, [])
 
   const handleExportPDF = async () => {
     setExporting(true)
     try {
-      
       if (productMarks.length === 0) {
-        toast({
-          title: "No Data",
-          description: "No product marks to export",
-          variant: "destructive",
-        })
+        toast({ title: 'No Data', description: 'No product marks to export', variant: 'destructive' })
         return
       }
 
@@ -48,30 +54,33 @@ function App() {
       console.log('PDF export result:', result);
       
       if (result.success) {
-        toast({
-          title: "Success",
-          description: `PDF exported: ${result.fileName}`,
-        })
+        toast({ title: 'Success', description: `PDF exported: ${result.fileName}` })
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to export PDF",
-          variant: "destructive",
-        })
+        toast({ title: 'Error', description: result.error || 'Failed to export PDF', variant: 'destructive' })
       }
     } catch (error) {
       console.error('Export error:', error)
-      toast({
-        title: "Error",
-        description: "Failed to export PDF",
-        variant: "destructive",
-      })
+      toast({ title: 'Error', description: 'Failed to export PDF', variant: 'destructive' })
     } finally {
       setExporting(false)
     }
   }
 
-
+  const handleCopyShareLink = async () => {
+    try {
+      const marks = storage.getProductMarks()
+      if (marks.length === 0) {
+        toast({ title: 'Nothing to share', description: 'Add some marks first', variant: 'destructive' })
+        return
+      }
+      const link = createShareLink(marks)
+      await navigator.clipboard.writeText(link)
+      toast({ title: 'Link copied', description: 'Share it to restore the same data elsewhere' })
+    } catch (e) {
+      console.error('Copy link failed', e)
+      toast({ title: 'Copy failed', description: 'Could not copy link', variant: 'destructive' })
+    }
+  }
 
   const handleClearAll = () => {
     if (confirm('Are you sure you want to clear all product marks? This action cannot be undone.')) {
@@ -79,8 +88,6 @@ function App() {
       window.location.reload()
     }
   }
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -119,14 +126,12 @@ function App() {
                 <span>•</span>
                 <span>Broken: {productMarks.filter(m => m.status === 'Сломана').length}</span>
               </div>
-              
               <div className="flex items-center gap-2">
-                <Button
-                  onClick={handleExportPDF}
-                  disabled={exporting || productMarks.length === 0}
-                  variant="outline"
-                  size="sm"
-                >
+                <Button onClick={handleCopyShareLink} variant="outline" size="sm">
+                  <Link2 className="h-4 w-4 mr-2" />
+                  Copy Share Link
+                </Button>
+                <Button onClick={handleExportPDF} disabled={exporting || productMarks.length === 0} variant="outline" size="sm">
                   {exporting ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
                   ) : (
@@ -134,16 +139,7 @@ function App() {
                   )}
                   Export PDF
                 </Button>
-                
-
-                
-                <Button
-                  onClick={handleClearAll}
-                  disabled={productMarks.length === 0}
-                  variant="outline"
-                  size="sm"
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
+                <Button onClick={handleClearAll} disabled={productMarks.length === 0} variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
                   <Trash2 className="h-4 w-4 mr-2" />
                   Clear All
                 </Button>

@@ -2,10 +2,7 @@ import jsPDF from 'jspdf';
 import { ProductMarkDetail } from '@/types/ProductMark';
 import { CodeGenerator } from '@/lib/codeGenerator';
 
-
-
 export class PDFExportService {
-
 
   static async exportProductMarksToPDF(productMarks: ProductMarkDetail[], title: string = 'Product Marks Report') {
     try {
@@ -223,17 +220,17 @@ export class PDFExportService {
             const maxWidth = colWidths[j] - 4; // More padding
             
             // Word wrap for longer text in Brand column only
-            if (j === 5 && text.length > 25) { // Brand column
+            if (j === 5 && typeof text === 'string' && text.length > 25) { // Brand column
               const lines = pdf.splitTextToSize(text, maxWidth);
               let textY = y + 6;
-              for (const line of lines.slice(0, 2)) { // Max 2 lines
+              for (const line of (Array.isArray(lines) ? lines : [lines]).slice(0, 2)) { // Max 2 lines
                 pdf.text(line, colPositions[j] + 2, textY);
                 textY += 6;
                 if (textY > y + rowHeight - 2) break;
               }
             } else {
               // Center text vertically for single-line content
-              pdf.text(text, colPositions[j] + 2, y + rowHeight/2 + 2);
+              pdf.text(String(text), colPositions[j] + 2, y + rowHeight/2 + 2);
             }
           }
           
@@ -245,8 +242,6 @@ export class PDFExportService {
 
         // Add QR/DataMatrix image
         try {
-          console.log(`Generating ${mark.brandType} code for: ${mark.brand}`);
-          
           if (mark.brandType === 'КМДМ') {
             // Generate QR code locally
             const codeDataUrl = await CodeGenerator.generateQRCode(mark.brand, 100);
@@ -275,28 +270,34 @@ export class PDFExportService {
               ? `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`
               : `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L`;
             
-            // Load DataMatrix image and add to PDF
-            const codeDataUrl = await CodeGenerator.loadImageAsDataUrl(dataMatrixUrl);
-            
-            // Center image in column
-            const imgSize = 16; // Optimal size for 22mm row height
-            const imgX = colPositions[6] + (colWidths[6] - imgSize) / 2;
-            const imgY = y + (rowHeight - imgSize) / 2;
-            
-            // Add the DataMatrix image to PDF
-            pdf.addImage(codeDataUrl, 'PNG', imgX, imgY, imgSize, imgSize);
+            // Try robust loader (fetch -> dataURL; fallback to image->canvas)
+            let codeDataUrl: string | undefined;
+            try {
+              codeDataUrl = await CodeGenerator.loadImageAsDataUrl(dataMatrixUrl);
+            } catch {
+              // Fallback will be handled below
+            }
+
+            if (codeDataUrl) {
+              const imgSize = 16;
+              const imgX = colPositions[6] + (colWidths[6] - imgSize) / 2;
+              const imgY = y + (rowHeight - imgSize) / 2;
+              pdf.addImage(codeDataUrl, 'PNG', imgX, imgY, imgSize, imgSize);
+            } else {
+              // Fallback text if still failing
+              pdf.setFontSize(8);
+              pdf.setTextColor(150, 150, 150);
+              const centerX = colPositions[6] + colWidths[6] / 2;
+              pdf.text('Error', centerX - 6, y + rowHeight/2 + 3);
+              pdf.setTextColor(0, 0, 0);
+            }
           }
-          
-          console.log(`Successfully added ${mark.brandType} image`);
         } catch (imgError) {
-          console.error(`Failed to generate ${mark.brandType} code:`, imgError);
-          
-          // Text fallback if code generation fails
+          // Final fallback to text
           pdf.setFontSize(8);
           pdf.setTextColor(150, 150, 150);
           const centerX = colPositions[6] + colWidths[6] / 2;
-          pdf.text('⚠', centerX - 2, y + rowHeight/2 - 2);
-          pdf.text('Error', centerX - 6, y + rowHeight/2 + 4);
+          pdf.text('Error', centerX - 6, y + rowHeight/2 + 3);
           pdf.setTextColor(0, 0, 0);
         }
 
@@ -390,7 +391,7 @@ export class PDFExportService {
         // Split datamatrix into multiple lines
         const datamatrix = mark.datamatrix;
         const maxCharsPerLine = 25;
-        const lines = [];
+        const lines = [] as string[];
         for (let i = 0; i < datamatrix.length; i += maxCharsPerLine) {
           lines.push(datamatrix.substring(i, i + maxCharsPerLine));
         }

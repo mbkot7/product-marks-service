@@ -40,7 +40,11 @@ export class CodeGenerator {
       
       // Use TEC-IT for DataMatrix generation
       const encodedData = encodeURIComponent(processedData);
-      const baseUrl = 'https://barcode.tec-it.com/barcode.ashx';
+      
+      // Using a CORS proxy to prevent cross-origin issues
+      const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+      const targetUrl = 'https://barcode.tec-it.com/barcode.ashx';
+
       const params = [
         `data=${encodedData}`,
         'code=DataMatrix',
@@ -59,8 +63,8 @@ export class CodeGenerator {
         params.push('eclevel=L');
       }
       
-      const dataMatrixUrl = `${baseUrl}?${params.join('&')}`;
-      console.log('Generated DataMatrix URL:', dataMatrixUrl);
+      const dataMatrixUrl = `${proxyUrl}${targetUrl}?${params.join('&')}`;
+      console.log('Generated DataMatrix URL (via proxy):', dataMatrixUrl);
       
       // Load the image and convert to data URL
       return await this.loadImageAsDataUrl(dataMatrixUrl);
@@ -72,82 +76,28 @@ export class CodeGenerator {
 
   // Helper method to load external image and convert to data URL
   static async loadImageAsDataUrl(url: string): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
+    try {
+      // Use fetch to bypass CORS issues with canvas
+      const response = await fetch(url);
       
-      // Try without crossOrigin first, then with
-      const tryLoad = (withCors: boolean = false) => {
-        if (withCors) {
-          img.crossOrigin = 'anonymous';
-        }
-        
-        img.onload = () => {
-          try {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            
-            if (!ctx) {
-              reject(new Error('Canvas context not available'));
-              return;
-            }
-            
-            canvas.width = img.width || 200;
-            canvas.height = img.height || 200;
-            
-            // White background
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw image on canvas
-            ctx.drawImage(img, 0, 0);
-            
-            // Convert to data URL
-            const dataUrl = canvas.toDataURL('image/png');
-            resolve(dataUrl);
-          } catch (canvasError) {
-            console.error('Canvas error:', canvasError);
-            if (!withCors) {
-              // Try with CORS
-              tryLoad(true);
-            } else {
-              reject(canvasError);
-            }
-          }
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.status} ${response.statusText}`);
+      }
+      
+      const blob = await response.blob();
+      
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve(reader.result as string);
         };
-        
-        img.onerror = (error) => {
-          console.error('Image load error:', error);
-          if (!withCors) {
-            // Try with CORS
-            tryLoad(true);
-          } else {
-            reject(new Error('Failed to load image from URL'));
-          }
-        };
-        
-        img.src = url;
-      };
-      
-      // Add timeout
-      const timeoutId = setTimeout(() => {
-        reject(new Error('Image load timeout (10s)'));
-      }, 10000);
-      
-      // Clear timeout on success
-      const originalResolve = resolve;
-      resolve = (value: string | PromiseLike<string>) => {
-        clearTimeout(timeoutId);
-        originalResolve(value);
-      };
-      
-      const originalReject = reject;
-      reject = (reason: any) => {
-        clearTimeout(timeoutId);
-        originalReject(reason);
-      };
-      
-      tryLoad(false);
-    });
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    } catch (error) {
+      console.error('Error in loadImageAsDataUrl:', error);
+      throw error; // Re-throw to be caught by the calling function
+    }
   }
 
   // Generate fallback code when all else fails
