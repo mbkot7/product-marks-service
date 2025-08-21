@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ProductMarksTable } from './components/ProductMarksTable'
 import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
@@ -11,14 +11,28 @@ import { PDFExportService } from './lib/pdfExport'
 function App() {
   const { toast, toasts, removeToast } = useToast()
   const [exporting, setExporting] = useState(false)
+  const [productMarks, setProductMarks] = useState(storage.getProductMarks())
   
   // Debug log to check if React is working
   console.log('App component loaded!')
+  
+  // Update product marks when storage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setProductMarks(storage.getProductMarks())
+    }
+    
+    // Also check periodically (for same-tab updates)
+    const interval = setInterval(handleStorageChange, 500)
+    
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
 
   const handleExportPDF = async () => {
     setExporting(true)
     try {
-      const productMarks = storage.getProductMarks()
       
       if (productMarks.length === 0) {
         toast({
@@ -30,7 +44,7 @@ function App() {
       }
 
       console.log('Starting PDF export...');
-      const result = await PDFExportService.exportProductMarksToPDF(productMarks)
+      const result = await PDFExportService.exportProductMarksWithImages(productMarks, 'Product Marks Report')
       console.log('PDF export result:', result);
       
       if (result.success) {
@@ -57,45 +71,7 @@ function App() {
     }
   }
 
-  const handleExportDetailedPDF = async () => {
-    setExporting(true)
-    try {
-      const productMarks = storage.getProductMarks()
-      
-      if (productMarks.length === 0) {
-        toast({
-          title: "No Data",
-          description: "No product marks to export",
-          variant: "destructive",
-        })
-        return
-      }
 
-      const result = await PDFExportService.exportWithDataMatrixCodes(productMarks)
-      
-      if (result.success) {
-        toast({
-          title: "Success",
-          description: `Detailed PDF exported: ${result.fileName}`,
-        })
-      } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to export detailed PDF",
-          variant: "destructive",
-        })
-      }
-    } catch (error) {
-      console.error('Export error:', error)
-      toast({
-        title: "Error",
-        description: "Failed to export detailed PDF",
-        variant: "destructive",
-      })
-    } finally {
-      setExporting(false)
-    }
-  }
 
   const handleClearAll = () => {
     if (confirm('Are you sure you want to clear all product marks? This action cannot be undone.')) {
@@ -104,7 +80,7 @@ function App() {
     }
   }
 
-  const productMarks = storage.getProductMarks()
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -156,22 +132,10 @@ function App() {
                   ) : (
                     <Download className="h-4 w-4 mr-2" />
                   )}
-                  Export PDF (Summary)
+                  Export PDF
                 </Button>
                 
-                <Button
-                  onClick={handleExportDetailedPDF}
-                  disabled={exporting || productMarks.length === 0}
-                  variant="outline"
-                  size="sm"
-                >
-                  {exporting ? (
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
-                  ) : (
-                    <FileText className="h-4 w-4 mr-2" />
-                  )}
-                  Export PDF (Detailed)
-                </Button>
+
                 
                 <Button
                   onClick={handleClearAll}

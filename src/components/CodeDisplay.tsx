@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { CodeGenerator } from '@/lib/codeGenerator';
+
 interface CodeDisplayProps {
   data: string;
   brandType: 'КМДМ' | 'КМЧЗ';
@@ -7,62 +10,105 @@ interface CodeDisplayProps {
 
 export function CodeDisplay({ data, brandType, size = 80 }: CodeDisplayProps) {
   if (brandType === 'КМЧЗ') {
-    return <QRCodeDisplay data={data} size={size} />;
-  } else {
-    return <DataMatrixDisplay data={data} size={size} />;
+    return <DataMatrixDisplay data={data} size={size} />; // КМЧЗ uses DataMatrix with GS1
+  } else { // КМДМ
+    return <QRCodeDisplay data={data} size={size} />; // КМДМ uses local QR code
   }
 }
 
-// QR Code display using QR-Server.com API for КМЧЗ
+// QR Code display using local generation for КМДМ (simple numeric codes)
 function QRCodeDisplay({ data, size }: { data: string; size: number }) {
-  const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(data)}`;
-  
+  const [codeUrl, setCodeUrl] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    const generateCode = async () => {
+      setLoading(true);
+      setError('');
+      
+      try {
+        console.log(`Generating QR code for data: ${data.substring(0, 50)}...`);
+        const url = await CodeGenerator.generateQRCode(data, size);
+        setCodeUrl(url);
+        console.log('Successfully generated QR code');
+      } catch (err) {
+        console.error('Error generating QR code:', err);
+        setError('Failed to generate QR code');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    generateCode();
+  }, [data, size]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center border rounded bg-gray-50" style={{ width: size, height: size }}>
+        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div 
+        className="flex flex-col items-center justify-center bg-gray-100 border rounded"
+        style={{ width: size, height: size }}
+      >
+        <span className="text-xs text-red-500">Error</span>
+        <span className="text-xs text-gray-500">QR</span>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center gap-2">
       <img 
-        src={qrUrl} 
-        alt="QR Code" 
+        src={codeUrl}
+        alt="QR Code"
         className="border rounded"
         style={{ width: size, height: size }}
         onError={(e) => {
-          console.error('QR code failed to load:', e);
-          (e.target as HTMLImageElement).style.display = 'none';
+          console.error('QR code failed to display');
+          setError('Display error');
         }}
       />
-      <div className="text-xs text-center max-w-[200px] break-all">
-        <span className="font-mono bg-gray-100 px-1 py-0.5 rounded" title={data}>
-          {data}
-        </span>
-      </div>
     </div>
   );
 }
 
-// DataMatrix display using TEC-IT barcode service with proper GS1 handling
+// DataMatrix display using TEC-IT barcode service for КМЧЗ (GS1 codes)
 function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
-  // Process GS1 data to handle separator characters correctly
-  const processGS1Data = (inputData: string): string => {
-    console.log('Processing GS1 data:', inputData);
+  // Check if data contains GS1 separators
+  const hasGS1 = data.includes('\\u001D') || data.includes('\u001D');
+  
+  let processedData: string;
+  let barcodeUrl: string;
+  
+  if (hasGS1) {
+    // Process GS1 data to handle separator characters correctly
+    console.log('Processing GS1 data:', data);
 
     // Replace Unicode escape sequences with actual GS1 separator character (ASCII 29)
-    let processedData = inputData
+    processedData = data
       .replace(/\\u001[dD]/g, String.fromCharCode(29)) // Handle \u001D and \u001d
       .replace(/\\u001D/g, String.fromCharCode(29))    // Handle \u001D specifically
       .replace(/\\u001d/g, String.fromCharCode(29));   // Handle \u001d specifically
 
     console.log('Processed GS1 data:', processedData);
-    return processedData;
-  };
-
-  // Process the data for GS1 compliance
-  const processedData = processGS1Data(data);
-
-  // For TEC-IT service, we need to properly encode the GS1 data
-  // The service expects GS1 separators to be represented as <GS> or we can use the raw character
-  const encodedData = encodeURIComponent(processedData);
-
-  // Generate TEC-IT DataMatrix barcode URL with proper GS1 handling
-  const barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
+    
+    // For TEC-IT service with GS1 data
+    const encodedData = encodeURIComponent(processedData);
+    barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
+  } else {
+    // For simple numeric codes, use the data as-is
+    console.log('Processing simple numeric data:', data);
+    processedData = data;
+    const encodedData = encodeURIComponent(processedData);
+    barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L`;
+  }
 
   console.log('Generated DataMatrix URL:', barcodeUrl);
 
@@ -91,11 +137,6 @@ function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
           (e.target as HTMLImageElement).src = fallbackSvg;
         }}
       />
-      <div className="text-xs text-center max-w-[200px] break-all">
-        <span className="font-mono bg-gray-100 px-1 py-0.5 rounded" title={data}>
-          {data}
-        </span>
-      </div>
     </div>
   );
 }

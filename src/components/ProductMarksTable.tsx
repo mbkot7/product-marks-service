@@ -25,6 +25,7 @@ export function ProductMarksTable() {
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [showAllCodes, setShowAllCodes] = useState(false);
+  const [visibleCodes, setVisibleCodes] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
   // Load data on component mount
@@ -227,6 +228,18 @@ export function ProductMarksTable() {
     return mark.brandType as 'КМДМ' | 'КМЧЗ';
   };
 
+  const toggleCodeVisibility = (markId: string) => {
+    setVisibleCodes(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(markId)) {
+        newSet.delete(markId);
+      } else {
+        newSet.add(markId);
+      }
+      return newSet;
+    });
+  };
+
   return (
     <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg">
       <CardHeader>
@@ -242,7 +255,13 @@ export function ProductMarksTable() {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setShowAllCodes(!showAllCodes)}
+              onClick={() => {
+                setShowAllCodes(!showAllCodes);
+                if (!showAllCodes) {
+                  // If showing all codes, clear individual visibility
+                  setVisibleCodes(new Set());
+                }
+              }}
               className="flex items-center gap-2"
             >
               {showAllCodes ? (
@@ -268,7 +287,7 @@ export function ProductMarksTable() {
                 <DialogHeader>
                   <DialogTitle>Bulk Add Marks</DialogTitle>
                   <DialogDescription>
-                    Add codes (one per line). Numeric codes (like 241112010000000000000010124) are КМДМ, codes with \u001D are КМЧЗ. Codes go to "Марка" column, datamatrix is generated automatically.
+                    Add codes (one per line). Numeric codes (КМДМ) generate QR codes, codes with \u001D (КМЧЗ) generate DataMatrix codes. Codes go to "Марка" column.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6">
@@ -358,7 +377,7 @@ export function ProductMarksTable() {
                 <TableHead>Код поставщика</TableHead>
                 <TableHead>Тип марки</TableHead>
                 <TableHead>Марка</TableHead>
-                <TableHead>Datamatrix</TableHead>
+                <TableHead>QR/DataMatrix код</TableHead>
                 <TableHead>Статус</TableHead>
                 <TableHead className="text-right">Действия</TableHead>
               </TableRow>
@@ -444,16 +463,25 @@ export function ProductMarksTable() {
                       />
                     ) : (
                       <div className="space-y-2">
-                        {showAllCodes && (
-                          <CodeDisplay 
-                            data={mark.datamatrix} 
-                            brandType={getBrandType(editingRow, editData, mark)}
-                            size={80}
-                          />
+                        {showAllCodes || visibleCodes.has(mark._id) ? (
+                          <div 
+                            className="cursor-pointer"
+                            onClick={() => toggleCodeVisibility(mark._id)}
+                          >
+                            <CodeDisplay 
+                              data={mark.brand} 
+                              brandType={getBrandType(editingRow, editData, mark)}
+                              size={80}
+                            />
+                          </div>
+                        ) : (
+                          <div 
+                            className="text-xs text-gray-500 italic cursor-pointer hover:text-blue-500 p-2 rounded hover:bg-blue-50"
+                            onClick={() => toggleCodeVisibility(mark._id)}
+                          >
+                            Click to show {mark.brandType === 'КМДМ' ? 'QR code' : 'DataMatrix code (GS1)'}
+                          </div>
                         )}
-                        <div className="font-mono text-xs break-all max-w-[200px] bg-gray-50 p-1 rounded">
-                          {mark.datamatrix}
-                        </div>
                       </div>
                     )}
                   </TableCell>

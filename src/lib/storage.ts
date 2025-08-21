@@ -60,18 +60,20 @@ export const storage = {
     
     datamatrixes.forEach(inputCode => {
       // Determine brand type based on content
-      const brandType: 'КМДМ' | 'КМЧЗ' = inputCode.includes('\\u001D') || inputCode.includes('\u001D') ? 'КМЧЗ' : 'КМДМ';
+      // КМЧЗ: contains \u001D or other GS1 identifiers or parentheses 
+      // КМДМ: pure numeric codes
+      const hasGS1Separator = inputCode.includes('\\u001D') || inputCode.includes('\u001D');
+      const hasParentheses = inputCode.includes('(') || inputCode.includes(')');
+      const hasLetters = /[a-zA-Z]/.test(inputCode);
+      const isNumericOnly = /^\d+$/.test(inputCode.trim());
       
-      // For КМДМ (numeric codes), the brand is the code itself
-      // For КМЧЗ (GS1 codes), extract the first part before GS1 separator
-      let brand: string;
-      if (brandType === 'КМДМ') {
-        brand = inputCode.trim(); // For numeric codes, use the whole code as brand
-      } else {
-        // For КМЧЗ, extract the GTIN part (usually first 14 digits after 01)
-        const match = inputCode.match(/^01(\d{14})/);
-        brand = match ? match[1] : inputCode.substring(0, 14);
-      }
+      const brandType: 'КМДМ' | 'КМЧЗ' = (hasGS1Separator || hasParentheses || hasLetters) && !isNumericOnly ? 'КМЧЗ' : 'КМДМ';
+      
+      console.log(`Code: ${inputCode}, Type: ${brandType}, hasGS1: ${hasGS1Separator}, hasParens: ${hasParentheses}, hasLetters: ${hasLetters}, isNumeric: ${isNumericOnly}`);
+      
+      // Brand column should show the full input code for display
+      // Datamatrix will be used only for generating QR/DataMatrix images
+      const brand = inputCode.trim(); // Always use full code in Brand column
       
       if (!existingBrands.has(brand)) {
         const newMark: ProductMarkDetail = {
