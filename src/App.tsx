@@ -89,7 +89,7 @@ function App() {
       
       toast({ 
         title: 'Short link copied! 🔗', 
-        description: `${shortLink} - Easy to share in messages!` 
+        description: `${shortLink}` 
       })
     } catch (e) {
       console.error('Copy short link failed', e)
