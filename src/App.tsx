@@ -12,6 +12,7 @@ import { createShareLink, extractStateFromLocation } from './lib/urlState'
 function App() {
   const { toast, toasts, removeToast } = useToast()
   const [exporting, setExporting] = useState(false)
+  const [loading, setLoading] = useState(true) // Start with loading true
   const [productMarks, setProductMarks] = useState(storage.getProductMarks())
   
   // Debug log to check if React is working
@@ -28,6 +29,8 @@ function App() {
       const clean = `${window.location.origin}${window.location.pathname}`
       window.history.replaceState({}, '', clean)
     }
+    // App is fully loaded
+    setLoading(false)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
@@ -127,19 +130,19 @@ function App() {
                 <span>Broken: {productMarks.filter(m => m.status === 'Сломана').length}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button onClick={handleCopyShareLink} variant="outline" size="sm">
+                <Button onClick={handleCopyShareLink} disabled={loading} variant="outline" size="sm">
                   <Link2 className="h-4 w-4 mr-2" />
                   Copy Share Link
                 </Button>
-                <Button onClick={handleExportPDF} disabled={exporting || productMarks.length === 0} variant="outline" size="sm">
-                  {exporting ? (
+                <Button onClick={handleExportPDF} disabled={loading || exporting || productMarks.length === 0} variant="outline" size="sm">
+                  {loading || exporting ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
                   ) : (
                     <Download className="h-4 w-4 mr-2" />
                   )}
-                  Export PDF
+                  {loading ? 'Loading...' : 'Export PDF'}
                 </Button>
-                <Button onClick={handleClearAll} disabled={productMarks.length === 0} variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                <Button onClick={handleClearAll} disabled={loading || productMarks.length === 0} variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
                   <Trash2 className="h-4 w-4 mr-2" />
                   Clear All
                 </Button>
