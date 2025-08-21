@@ -11,6 +11,9 @@ import { PDFExportService } from './lib/pdfExport'
 function App() {
   const { toast, toasts, removeToast } = useToast()
   const [exporting, setExporting] = useState(false)
+  
+  // Debug log to check if React is working
+  console.log('App component loaded!')
 
   const handleExportPDF = async () => {
     setExporting(true)
