@@ -70,9 +70,8 @@ function QRCodeDisplay({ data, size }: { data: string; size: number }) {
         alt="QR Code"
         className="border rounded"
         style={{ width: size, height: size }}
-        onError={(e) => {
+        onError={() => {
           console.error('QR code failed to display');
-          setError('Display error');
         }}
       />
     </div>

@@ -135,7 +135,7 @@ export class CodeGenerator {
       
       // Clear timeout on success
       const originalResolve = resolve;
-      resolve = (value: string) => {
+      resolve = (value: string | PromiseLike<string>) => {
         clearTimeout(timeoutId);
         originalResolve(value);
       };
@@ -150,53 +150,8 @@ export class CodeGenerator {
     });
   }
 
-  // Generate a simple DataMatrix-like pattern
-  private static generateSimpleDataMatrix(data: string, size: number): string {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) {
-      return this.generateFallbackCode(data, size, 'DataMatrix');
-    }
-
-    canvas.width = size;
-    canvas.height = size;
-
-    // White background
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, size, size);
-
-    // Create a simple pattern based on data
-    ctx.fillStyle = '#000000';
-    const cellSize = Math.floor(size / 20); // 20x20 grid
-    const hash = this.simpleHash(data);
-
-    // Draw border
-    ctx.fillRect(0, 0, size, cellSize); // top
-    ctx.fillRect(0, 0, cellSize, size); // left
-    ctx.fillRect(size - cellSize, 0, cellSize, size); // right
-    ctx.fillRect(0, size - cellSize, size, cellSize); // bottom
-
-    // Draw pattern based on data hash
-    for (let i = 1; i < 19; i++) {
-      for (let j = 1; j < 19; j++) {
-        if ((hash + i * j) % 3 === 0) {
-          ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
-        }
-      }
-    }
-
-    // Add timing patterns
-    for (let i = 2; i < 18; i += 2) {
-      ctx.fillRect(i * cellSize, cellSize, cellSize, cellSize); // top timing
-      ctx.fillRect(cellSize, i * cellSize, cellSize, cellSize); // left timing
-    }
-
-    return canvas.toDataURL('image/png');
-  }
-
   // Generate fallback code when all else fails
-  private static generateFallbackCode(data: string, size: number, type: string): string {
+  private static generateFallbackCode(_data: string, size: number, type: string): string {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     
