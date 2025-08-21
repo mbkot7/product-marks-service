@@ -156,9 +156,12 @@ function App() {
         <ProductMarksTable />
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500 pt-8">
+        <div className="text-center text-sm text-gray-500 pt-8 space-y-2">
           <p>Product Mark Details Service - Standalone Version</p>
           <p>Data is stored locally in your browser. Export regularly to backup your data.</p>
+          <div className="pt-4 border-t border-gray-200 mt-6">
+            <p className="text-gray-400 font-medium">Developed by ERP team</p>
+          </div>
         </div>
       </div>
 
