@@ -8,12 +8,13 @@ export default defineConfig({
   base: '/product-marks-service/',
   build: {
     target: 'es2015',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js',
-        format: 'es',
+        manualChunks: undefined,
       },
     },
   },

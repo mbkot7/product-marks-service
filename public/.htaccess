@@ -1,0 +1,9 @@
+AddType application/javascript .js
+AddType application/javascript .mjs
+AddType text/css .css
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+</IfModule>
