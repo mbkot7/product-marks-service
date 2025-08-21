@@ -38,3 +38,37 @@ export function extractStateFromLocation(): ProductMarkDetail[] | null {
   if (!s) return null;
   return decodeStateFromParam(s);
 }
+
+// Shorten URL using TinyURL API (free, no registration required)
+export async function shortenUrl(longUrl: string): Promise<string> {
+  try {
+    // TinyURL API endpoint (free, no auth required)
+    const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`;
+    
+    const response = await fetch(apiUrl);
+    
+    if (!response.ok) {
+      throw new Error(`TinyURL API error: ${response.status}`);
+    }
+    
+    const shortUrl = await response.text();
+    
+    // TinyURL returns the short URL as plain text
+    // If it starts with 'http', it's successful
+    if (shortUrl.startsWith('http')) {
+      return shortUrl.trim();
+    } else {
+      throw new Error('Invalid response from TinyURL');
+    }
+  } catch (error) {
+    console.warn('URL shortening failed:', error);
+    // Return original URL as fallback
+    return longUrl;
+  }
+}
+
+// Create and shorten share link in one function
+export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<string> {
+  const longUrl = createShareLink(marks);
+  return await shortenUrl(longUrl);
+}

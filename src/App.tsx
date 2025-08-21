@@ -7,12 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './com
 import { Download, FileText, Package, Trash2, Link2 } from 'lucide-react'
 import { storage } from './lib/storage'
 import { PDFExportService } from './lib/pdfExport'
-import { createShareLink, extractStateFromLocation } from './lib/urlState'
+import { createShareLink, extractStateFromLocation, createShortShareLink } from './lib/urlState'
 
 function App() {
   const { toast, toasts, removeToast } = useToast()
   const [exporting, setExporting] = useState(false)
   const [loading, setLoading] = useState(true) // Start with loading true
+  const [shortening, setShortening] = useState(false) // For URL shortening
   const [productMarks, setProductMarks] = useState(storage.getProductMarks())
   
   // Debug log to check if React is working
@@ -70,18 +71,42 @@ function App() {
   }
 
   const handleCopyShareLink = async () => {
+    if (shortening) return // Prevent double-click
+    
+    setShortening(true)
     try {
       const marks = storage.getProductMarks()
       if (marks.length === 0) {
         toast({ title: 'Nothing to share', description: 'Add some marks first', variant: 'destructive' })
         return
       }
-      const link = createShareLink(marks)
-      await navigator.clipboard.writeText(link)
-      toast({ title: 'Link copied', description: 'Share it to restore the same data elsewhere' })
+      
+      // Show loading toast
+      toast({ title: 'Creating short link...', description: 'Please wait...' })
+      
+      const shortLink = await createShortShareLink(marks)
+      await navigator.clipboard.writeText(shortLink)
+      
+      toast({ 
+        title: 'Short link copied! 🔗', 
+        description: `${shortLink} - Easy to share in messages!` 
+      })
     } catch (e) {
-      console.error('Copy link failed', e)
-      toast({ title: 'Copy failed', description: 'Could not copy link', variant: 'destructive' })
+      console.error('Copy short link failed', e)
+      // Fallback to long link
+      try {
+        const marks = storage.getProductMarks()
+        const longLink = createShareLink(marks)
+        await navigator.clipboard.writeText(longLink)
+        toast({ 
+          title: 'Link copied (full)', 
+          description: 'Short link failed, copied full link instead' 
+        })
+      } catch (fallbackError) {
+        toast({ title: 'Copy failed', description: 'Could not copy link', variant: 'destructive' })
+      }
+    } finally {
+      setShortening(false)
     }
   }
 
@@ -130,9 +155,13 @@ function App() {
                 <span>Broken: {productMarks.filter(m => m.status === 'Сломана').length}</span>
               </div>
               <div className="flex items-center gap-2">
-                <Button onClick={handleCopyShareLink} disabled={loading} variant="outline" size="sm">
-                  <Link2 className="h-4 w-4 mr-2" />
-                  Copy Share Link
+                <Button onClick={handleCopyShareLink} disabled={loading || shortening} variant="outline" size="sm">
+                  {shortening ? (
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                  ) : (
+                    <Link2 className="h-4 w-4 mr-2" />
+                  )}
+                  {shortening ? 'Creating...' : 'Copy Short Link'}
                 </Button>
                 <Button onClick={handleExportPDF} disabled={loading || exporting || productMarks.length === 0} variant="outline" size="sm">
                   {loading || exporting ? (
