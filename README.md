@@ -1,60 +1,112 @@
-# Product Mark Details Service
+# Product Marks Service
 
-A standalone web application for managing product marks with bulk import, editing capabilities, and PDF export functionality. This service replicates the Product Mark Details functionality from UTA as a standalone application that can be deployed to GitHub Pages.
+A React-based web application for managing product marks with bulk import, editing capabilities, and PDF export functionality. All data is stored locally in your browser.
 
 ## Features
 
-- 📊 **Product Mark Management**: Add, edit, and delete product marks
-- 📥 **Bulk Import**: Import multiple product marks at once from text input
-- 🏷️ **Brand Type Support**: Support for КМДМ and КМЧЗ brand types
-- 📱 **QR/DataMatrix Codes**: Automatic generation and display of codes
-- 📄 **PDF Export**: Export data in summary or detailed format
-- 💾 **Local Storage**: All data stored locally in browser (no backend required)
+- **Product Mark Management**: Add, edit, and manage product marks with detailed information
+- **Bulk Import**: Import multiple product marks at once
+- **PDF Export**: Export your product marks to PDF with QR codes and DataMatrix codes
+- **GitHub Gist Sharing**: Share unlimited product marks via GitHub Gist links
+- **Local Storage**: All data is stored locally in your browser
+- **Responsive Design**: Works on desktop and mobile devices
+
+## GitHub Gist Integration
+
+The application uses GitHub Gist for sharing product marks. This allows you to share unlimited amounts of data through short, shareable links.
+
+### Setup
+
+1. Create a GitHub Personal Access Token:
+   - Go to [GitHub Settings > Tokens](https://github.com/settings/tokens)
+   - Click "Generate new token (classic)"
+   - Give it a name like "Product Marks Service"
+   - Select the `gist` scope
+   - Copy the generated token
+
+2. Create a `.env` file in the project root:
+   ```bash
+   VITE_GITHUB_TOKEN=your_github_token_here
+   ```
+
+3. The token will be used for all users of the application.
+
+### Sharing
+
+- Click "Create Gist Link" to share your product marks
+- The data will be uploaded to a public GitHub Gist
+- Share the generated link with others
+- Recipients can open the link to load all your product marks
+
+## Development
+
+### Prerequisites
+
+- Node.js (v16 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/mbkot7/product-marks-service.git
+   cd product-marks-service
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Create `.env` file with your GitHub token (see Setup section above)
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:5173](http://localhost:5173) in your browser
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory.
 
 ## Usage
 
-### Adding Product Marks
+1. **Add Product Marks**: Use the "Add Mark" button to add individual marks or use bulk import
+2. **Edit Marks**: Click on any mark to edit its details
+3. **Export PDF**: Click "Export PDF" to generate a PDF report
+4. **Share**: Click "Create Gist Link" to share your marks via GitHub Gist
+5. **Import from Link**: Open a shared Gist link to load marks from others
 
-1. Click "Bulk Add Marks" button
-2. Paste your datamatrix codes (one per line)
-3. Click "Parse Data" to preview
-4. Click "Add All" to import the marks
+## Data Structure
 
-### Editing Marks
-
-- Click the edit button (pencil icon) on any row
-- Modify the fields as needed
-- Click save (checkmark) to confirm or cancel (X) to discard
-
-### Exporting Data
-
-- **Summary PDF**: Compact table format with key information
-
-### Data Management
-
-- All data is stored in your browser's local storage
-- Use "Clear All" to reset all data
-- Export regularly to backup your data
-
-## Browser Compatibility
-
-- Chrome/Edge
-- Opera
-- Yandex
-- Firefox 
-- Safari 
-
-## Data Format
-
-Product marks include the following fields:
+Each product mark contains:
 - Product name
-- Barcode
-- Supplier code
-- Brand type (КМДМ/КМЧЗ)
-- Brand code
-- Datamatrix code
-- Status (В обороте/Выбыла/Сломана)
+- Product code
+- QR code data
+- DataMatrix code data
+- Status (Active, Retired, Broken)
+- Creation timestamp
+
+## Technologies Used
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- jsPDF
+- QRCode library
+- GitHub Gist API
 
 ## License
 
-This project is licensed under the MIT License.
+This project is open source and available under the [MIT License](LICENSE).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
