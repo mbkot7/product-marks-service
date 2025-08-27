@@ -74,7 +74,7 @@ export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<
 }
 
 // GitHub token for authenticated requests
-const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN || atob('Z2hwX2twdGtRN0VIcDA2c0tHQ29SWHg3TkhtczZHcHlXVzJsMEhyYQ==');
+const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN || atob('Z2hwX2xvTGc0cE1aR0RPNVhwb01kaG8waVZIUGJSQVRWQzM0eXRNVA==');
 
 function getGitHubToken(): string | null {
   return GITHUB_TOKEN || null;
