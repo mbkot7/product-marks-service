@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ProductMarksTable } from './components/ProductMarksTable'
+import { TokenSetup } from './components/TokenSetup'
 import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
 import { Button } from './components/ui/button'
@@ -7,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './com
 import { Download, FileText, Package, Trash2, Link2 } from 'lucide-react'
 import { storage } from './lib/storage'
 import { PDFExportService } from './lib/pdfExport'
-import { createShareLink, extractStateFromLocation, createShortShareLink } from './lib/urlState'
+import { createSmartShareLink, loadFromGist, extractStateFromLocation } from './lib/urlState'
 
 function App() {
   const { toast, toasts, removeToast } = useToast()
@@ -21,17 +22,38 @@ function App() {
   
   // Load from URL state on first mount
   useEffect(() => {
-    const fromUrl = extractStateFromLocation()
-    if (fromUrl && fromUrl.length > 0) {
-      storage.saveProductMarks(fromUrl)
-      setProductMarks(fromUrl)
-      toast({ title: 'Loaded from link', description: `Restored ${fromUrl.length} marks from the URL` })
-      // clean URL (remove ?s=...) but keep path
-      const clean = `${window.location.origin}${window.location.pathname}`
-      window.history.replaceState({}, '', clean)
-    }
-    // App is fully loaded
-    setLoading(false)
+    const loadData = async () => {
+      try {
+        // First try to load from Gist
+        const fromGist = await loadFromGist();
+        if (fromGist && fromGist.length > 0) {
+          storage.saveProductMarks(fromGist);
+          setProductMarks(fromGist);
+          toast({ title: 'Loaded from Gist', description: `Restored ${fromGist.length} marks from GitHub Gist` });
+          // Clean URL but keep path
+          const clean = `${window.location.origin}${window.location.pathname}`;
+          window.history.replaceState({}, '', clean);
+          return;
+        }
+
+        // Fallback to regular URL state
+        const fromUrl = extractStateFromLocation();
+        if (fromUrl && fromUrl.length > 0) {
+          storage.saveProductMarks(fromUrl);
+          setProductMarks(fromUrl);
+          toast({ title: 'Loaded from link', description: `Restored ${fromUrl.length} marks from the URL` });
+          // Clean URL but keep path
+          const clean = `${window.location.origin}${window.location.pathname}`;
+          window.history.replaceState({}, '', clean);
+        }
+      } catch (error) {
+        console.error('Failed to load data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
@@ -71,44 +93,38 @@ function App() {
   }
 
   const handleCopyShareLink = async () => {
-    if (shortening) return // Prevent double-click
-    
-    setShortening(true)
+    setShortening(true);
     try {
-      const marks = storage.getProductMarks()
+      const marks = storage.getProductMarks();
       if (marks.length === 0) {
-        toast({ title: 'Nothing to share', description: 'Add some marks first', variant: 'destructive' })
-        return
+        toast({ title: 'Nothing to share', description: 'Add some marks first', variant: 'destructive' });
+        return;
       }
+
+      toast({ title: 'Creating Gist link...', description: 'Please wait...' });
       
-      // Show loading toast
-      toast({ title: 'Creating short link...', description: 'Please wait...' })
+      const shareResult = await createSmartShareLink(marks);
+      await navigator.clipboard.writeText(shareResult.url);
       
-      const shortLink = await createShortShareLink(marks)
-      await navigator.clipboard.writeText(shortLink)
+      const title = 'GitHub Gist link copied! 🔗';
+      const description = 'Data uploaded to GitHub Gist (authenticated)';
       
-      toast({ 
-        title: 'Short link copied! 🔗', 
-        description: `${shortLink}` 
-      })
+      if (shareResult.warning) {
+        toast({ title, description: `${description}. ${shareResult.warning}` });
+      } else {
+        toast({ title, description });
+      }
     } catch (e) {
-      console.error('Copy short link failed', e)
-      // Fallback to long link
-      try {
-        const marks = storage.getProductMarks()
-        const longLink = createShareLink(marks)
-        await navigator.clipboard.writeText(longLink)
-        toast({ 
-          title: 'Link copied (full)', 
-          description: 'Short link failed, copied full link instead' 
-        })
-      } catch (fallbackError) {
-        toast({ title: 'Copy failed', description: 'Could not copy link', variant: 'destructive' })
-      }
+      console.error('Copy share link failed', e);
+      toast({ 
+        title: 'Gist creation failed', 
+        description: 'Please check your internet connection and try again', 
+        variant: 'destructive' 
+      });
     } finally {
-      setShortening(false)
+      setShortening(false);
     }
-  }
+  };
 
   const handleClearAll = () => {
     if (confirm('Are you sure you want to clear all product marks? This action cannot be undone.')) {
@@ -161,7 +177,7 @@ function App() {
                   ) : (
                     <Link2 className="h-4 w-4 mr-2" />
                   )}
-                  {shortening ? 'Creating...' : 'Copy Short Link'}
+                  {shortening ? 'Creating...' : 'Create Gist Link'}
                 </Button>
                 <Button onClick={handleExportPDF} disabled={loading || exporting || productMarks.length === 0} variant="outline" size="sm">
                   {loading || exporting ? (
@@ -179,6 +195,9 @@ function App() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Token Setup */}
+        <TokenSetup />
 
         {/* Main Table */}
         <ProductMarksTable productMarks={productMarks} onDataChange={setProductMarks} />
