@@ -2,6 +2,9 @@ import jsPDF from 'jspdf';
 import { ProductMarkDetail } from '@/types/ProductMark';
 import { CodeGenerator } from '@/lib/codeGenerator';
 
+// Add Unicode support for jsPDF
+import 'jspdf/dist/polyfills.es.js';
+
 export class PDFExportService {
 
   static async exportProductMarksToPDF(productMarks: ProductMarkDetail[], title: string = 'Product Marks Report') {
@@ -12,18 +15,21 @@ export class PDFExportService {
         format: 'a4'
       });
 
+      // Use built-in font with Unicode support
+      pdf.setFont('courier');
+
       // Add title
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('courier', 'normal');
       pdf.text(title, 20, 20);
 
       // Add timestamp
       pdf.setFontSize(10);
-      pdf.setFont('helvetica', 'normal');
-      const now = new Date().toLocaleString();
+      pdf.setFont('courier', 'normal');
+      const now = new Date().toLocaleString('en-GB');
       pdf.text(`Generated: ${now}`, 20, 30);
 
-      // Table headers
+      // Table headers with Unicode support
       const headers = [
         'Product', 'Barcode', 'Supplier Code', 'Brand Type', 
         'Brand', 'Datamatrix', 'Status', 'Created'
@@ -38,7 +44,7 @@ export class PDFExportService {
         mark.brand.substring(0, 15) + (mark.brand.length > 15 ? '...' : ''),
         mark.datamatrix.substring(0, 20) + (mark.datamatrix.length > 20 ? '...' : ''),
         mark.status,
-        new Date(mark.createdAt).toLocaleDateString()
+        new Date(mark.createdAt).toLocaleDateString('ru-RU')
       ]);
 
       // Simple table implementation
@@ -49,7 +55,7 @@ export class PDFExportService {
 
       // Draw headers
       pdf.setFontSize(8);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('courier', 'normal');
       headers.forEach((header, i) => {
         pdf.rect(x, y, colWidths[i], rowHeight);
         pdf.text(header, x + 2, y + 5);
@@ -59,7 +65,7 @@ export class PDFExportService {
       y += rowHeight;
 
       // Draw data rows
-      pdf.setFont('helvetica', 'normal');
+      pdf.setFont('courier', 'normal');
       data.forEach((row) => {
         x = 20;
         
@@ -97,31 +103,32 @@ export class PDFExportService {
     }
   }
 
-  // Export with beautiful table format and QR/DataMatrix images
+  // Export with grid layout of QR/DataMatrix codes
   static async exportProductMarksWithImages(productMarks: ProductMarkDetail[], title: string = 'Product Marks Report') {
     try {
       const pdf = new jsPDF({
-        orientation: 'landscape',
+        orientation: 'portrait',
         unit: 'mm',
         format: 'a4'
       });
 
-      let y = 20;
-      const pageHeight = 190; // Page content height
-      const rowHeight = 22; // Optimized for 8 rows per page
+      // Use built-in font with Unicode support
+      pdf.setFont('courier');
 
-      // Add title with styling
-      pdf.setFillColor(41, 98, 255); // Blue background
-      pdf.rect(15, 10, 267, 20, 'F');
+      let y = 20;
+
+      // Add title with clean styling
+      pdf.setFillColor(51, 51, 51); // Dark grey background
+      pdf.rect(15, 10, 180, 15, 'F');
       pdf.setTextColor(255, 255, 255); // White text
-      pdf.setFontSize(18);
-      pdf.setFont('helvetica', 'bold');
-      pdf.text(title, 20, 23);
+      pdf.setFontSize(14);
+      pdf.setFont('courier', 'normal');
+      pdf.text(title, 20, 20);
       
       // Add timestamp
-      pdf.setTextColor(0, 0, 0); // Black text
-      pdf.setFontSize(10);
-      pdf.setFont('helvetica', 'normal');
+      pdf.setTextColor(100, 100, 100); // Grey text
+      pdf.setFontSize(9);
+      pdf.setFont('courier', 'normal');
       const now = new Date().toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit', 
@@ -129,130 +136,56 @@ export class PDFExportService {
         hour: '2-digit',
         minute: '2-digit'
       });
-      pdf.text(`Generated: ${now}`, 20, y + 20);
-      y += 35;
+      pdf.text(`Generated: ${now}`, 20, y + 15);
+      y += 25;
 
-      // Table headers with better styling (matching frontend)
-      const headers = ['#', 'Товар', 'Штрих-код', 'Код поставщика', 'Тип марки', 'Марка', 'QR/DataMatrix код'];
-      const colPositions = [15, 25, 50, 75, 100, 125, 200];
-      const colWidths = [8, 23, 23, 23, 23, 73, 30];
-
-      // Header background (adjust width for new columns)
-      const tableWidth = colPositions[colPositions.length - 1] + colWidths[colWidths.length - 1] - 15;
-      pdf.setFillColor(230, 230, 230);
-      pdf.rect(15, y, tableWidth, 12, 'F');
+      // Grid layout: 10 columns x 4 rows = 40 codes per page
+      const codesPerRow = 10;
+      const rowsPerPage = 4;
+      const codeSize = 16; // Size of each code
+      const codeSpacing = 2; // Spacing between codes
+      const textHeight = 8; // Height for text below code
+      const totalCodeHeight = codeSize + textHeight + 4; // Total height per code
       
-      // Header border
-      pdf.setDrawColor(100, 100, 100);
-      pdf.setLineWidth(0.5);
-      pdf.rect(15, y, tableWidth, 12);
-      
-      // Header text
-      pdf.setTextColor(0, 0, 0);
-      pdf.setFontSize(10);
-      pdf.setFont('helvetica', 'bold');
-      for (let i = 0; i < headers.length; i++) {
-        pdf.text(headers[i], colPositions[i] + 1, y + 8);
-        // Vertical lines for columns
-        if (i > 0) {
-          pdf.line(colPositions[i], y, colPositions[i], y + 12);
-        }
-      }
-      y += 12;
+      // Calculate starting position to center the grid
+      const pageWidth = 210; // A4 width in mm
+      const totalGridWidth = codesPerRow * codeSize + (codesPerRow - 1) * codeSpacing;
+      const startX = (pageWidth - totalGridWidth) / 2;
 
-      // Process each mark with better error handling
+      // Process each mark
       for (let i = 0; i < productMarks.length; i++) {
         const mark = productMarks[i];
         
         // Check if we need a new page
-        if (y + rowHeight > pageHeight) {
+        if (i > 0 && i % (codesPerRow * rowsPerPage) === 0) {
           pdf.addPage();
           y = 20;
-          
-          // Redraw headers on new page
-          pdf.setFillColor(230, 230, 230);
-          pdf.rect(15, y, tableWidth, 12, 'F');
-          pdf.setDrawColor(100, 100, 100);
-          pdf.rect(15, y, tableWidth, 12);
-          
-          pdf.setTextColor(0, 0, 0);
-          pdf.setFontSize(10);
-          pdf.setFont('helvetica', 'bold');
-          for (let j = 0; j < headers.length; j++) {
-            pdf.text(headers[j], colPositions[j] + 1, y + 8);
-            if (j > 0) {
-              pdf.line(colPositions[j], y, colPositions[j], y + 12);
-            }
-          }
-          y += 12;
         }
 
-        // Row background (alternating colors)
-        if (i % 2 === 0) {
-          pdf.setFillColor(248, 249, 250);
-          pdf.rect(15, y, tableWidth, rowHeight, 'F');
-        }
+        // Calculate position in grid
+        const gridIndex = i % (codesPerRow * rowsPerPage);
+        const row = Math.floor(gridIndex / codesPerRow);
+        const col = gridIndex % codesPerRow;
         
-        // Row border
-        pdf.setDrawColor(200, 200, 200);
-        pdf.setLineWidth(0.3);
-        pdf.rect(15, y, tableWidth, rowHeight);
+        const x = startX + col * (codeSize + codeSpacing);
+        const currentY = y + row * totalCodeHeight;
 
-        // Row data
-        pdf.setTextColor(0, 0, 0);
-        pdf.setFontSize(9);
-        pdf.setFont('helvetica', 'normal');
-        
-        const data = [
-          (i + 1).toString(),
-          mark.product || '-',
-          mark.barcode || '-',
-          mark.supplierCode || '-',
-          mark.brandType,
-          mark.brand, // Full brand text
-          '' // QR/DataMatrix will be image
-        ];
-
-        // Draw text data with word wrapping
-        for (let j = 0; j < data.length; j++) {
-          if (j !== 6) { // Skip QR/DataMatrix column
-            const text = data[j];
-            const maxWidth = colWidths[j] - 4; // More padding
-            
-            // Word wrap for longer text in Brand column only
-            if (j === 5 && typeof text === 'string' && text.length > 25) { // Brand column
-              const lines = pdf.splitTextToSize(text, maxWidth);
-              let textY = y + 6;
-              for (const line of (Array.isArray(lines) ? lines : [lines]).slice(0, 2)) { // Max 2 lines
-                pdf.text(line, colPositions[j] + 2, textY);
-                textY += 6;
-                if (textY > y + rowHeight - 2) break;
-              }
-            } else {
-              // Center text vertically for single-line content
-              pdf.text(String(text), colPositions[j] + 2, y + rowHeight/2 + 2);
-            }
-          }
-          
-          // Draw column separators
-          if (j > 0) {
-            pdf.line(colPositions[j], y, colPositions[j], y + rowHeight);
-          }
-        }
-
-        // Add QR/DataMatrix image
+        // Generate and add QR/DataMatrix code
         try {
           if (mark.brandType === 'КМДМ') {
             // Generate QR code locally
             const codeDataUrl = await CodeGenerator.generateQRCode(mark.brand, 100);
             
-            // Center image in column
-            const imgSize = 16; // Optimal size for 22mm row height
-            const imgX = colPositions[6] + (colWidths[6] - imgSize) / 2;
-            const imgY = y + (rowHeight - imgSize) / 2;
+            // Add the QR code image
+            pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
             
-            // Add the generated QR code image directly to PDF
-            pdf.addImage(codeDataUrl, 'PNG', imgX, imgY, imgSize, imgSize);
+            // Add the full code below the image
+            pdf.setFontSize(6);
+            pdf.setTextColor(80, 80, 80);
+            const codeText = mark.brand;
+            const centerX = x + codeSize / 2;
+            pdf.text(codeText, centerX - (codeText.length * 1.5), currentY + codeSize + 4);
+            pdf.setTextColor(0, 0, 0);
           } else {
             // Generate DataMatrix using TEC-IT API
             const hasGS1 = mark.brand.includes('\\u001D') || mark.brand.includes('\u001D');
@@ -265,70 +198,254 @@ export class PDFExportService {
                 .replace(/\\u001d/g, String.fromCharCode(29));
             }
             
+            // Ensure data is not empty
+            if (!processedData || processedData.length === 0) {
+              throw new Error('Empty data for DataMatrix');
+            }
+            
             const encodedData = encodeURIComponent(processedData);
             const dataMatrixUrl = hasGS1 
-              ? `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`
-              : `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L`;
+              ? `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L&dpi=96&imgsize=6`
+              : `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L&dpi=96&imgsize=6`;
             
-            // Try robust loader (fetch -> dataURL; fallback to image->canvas)
+            // Try to load DataMatrix image
             let codeDataUrl: string | undefined;
             try {
-              codeDataUrl = await CodeGenerator.loadImageAsDataUrl(dataMatrixUrl);
-            } catch {
-              // Fallback will be handled below
+              const timeoutPromise = new Promise<never>((_, reject) => {
+                setTimeout(() => reject(new Error('Timeout')), 5000);
+              });
+              
+              codeDataUrl = await Promise.race([
+                CodeGenerator.loadImageAsDataUrl(dataMatrixUrl),
+                timeoutPromise
+              ]);
+            } catch (loadError) {
+              console.warn('Failed to load DataMatrix image:', loadError);
             }
 
             if (codeDataUrl) {
-              const imgSize = 16;
-              const imgX = colPositions[6] + (colWidths[6] - imgSize) / 2;
-              const imgY = y + (rowHeight - imgSize) / 2;
-              pdf.addImage(codeDataUrl, 'PNG', imgX, imgY, imgSize, imgSize);
+              // Add the DataMatrix image
+              pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
+              
+              // Add the code below the image (for КМЧЗ, show only up to \u001D)
+              pdf.setFontSize(6);
+              pdf.setTextColor(80, 80, 80);
+              let codeText = mark.brand;
+              
+              // For КМЧЗ, truncate at \u001D or \u001d
+              if (mark.brandType === 'КМЧЗ') {
+                const gs1Index = codeText.search(/\\u001[dD]|\u001D/);
+                if (gs1Index !== -1) {
+                  codeText = codeText.substring(0, gs1Index);
+                }
+              }
+              
+              const centerX = x + codeSize / 2;
+              pdf.text(codeText, centerX - (codeText.length * 1.5), currentY + codeSize + 4);
+              pdf.setTextColor(0, 0, 0);
             } else {
-              // Fallback text if still failing
-              pdf.setFontSize(8);
-              pdf.setTextColor(150, 150, 150);
-              const centerX = colPositions[6] + colWidths[6] / 2;
-              pdf.text('Error', centerX - 6, y + rowHeight/2 + 3);
+              // Show truncated data as fallback
+              pdf.setFontSize(6);
+              pdf.setTextColor(100, 100, 100);
+              const centerX = x + codeSize / 2;
+              const truncatedData = processedData.length > 8 ? processedData.substring(0, 8) + '...' : processedData;
+              pdf.text(truncatedData, centerX - (truncatedData.length * 1.5), currentY + codeSize + 4);
               pdf.setTextColor(0, 0, 0);
             }
           }
         } catch (imgError) {
-          // Final fallback to text
-          pdf.setFontSize(8);
-          pdf.setTextColor(150, 150, 150);
-          const centerX = colPositions[6] + colWidths[6] / 2;
-          pdf.text('Error', centerX - 6, y + rowHeight/2 + 3);
+          // Show truncated data as final fallback
+          pdf.setFontSize(6);
+          pdf.setTextColor(100, 100, 100);
+          const centerX = x + codeSize / 2;
+          const truncatedData = mark.brand.length > 8 ? mark.brand.substring(0, 8) + '...' : mark.brand;
+          pdf.text(truncatedData, centerX - (truncatedData.length * 1.5), currentY + codeSize + 4);
           pdf.setTextColor(0, 0, 0);
         }
-
-        y += rowHeight;
       }
 
-      // Beautiful footer
+      // Clean footer
       const pageCount = pdf.getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
         pdf.setPage(i);
         
         // Footer line
-        pdf.setDrawColor(41, 98, 255);
-        pdf.setLineWidth(1);
-        pdf.line(15, 200, 15 + tableWidth, 200);
+        pdf.setDrawColor(200, 200, 200);
+        pdf.setLineWidth(0.5);
+        pdf.line(15, 280, 195, 280);
         
         // Footer text
         pdf.setFontSize(8);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Страница ${i} из ${pageCount}`, 15 + tableWidth - 40, 205);
-        pdf.text(`Всего записей: ${productMarks.length}`, 20, 205);
-        pdf.text('Создано в Product Mark Details Service', 20, 210);
+        pdf.setTextColor(120, 120, 120);
+        pdf.text(`Page ${i} of ${pageCount}`, 170, 285);
+        pdf.text(`Total: ${productMarks.length} codes`, 20, 285);
       }
 
       // Download the PDF
-      const fileName = `product-marks-report-${new Date().toISOString().split('T')[0]}.pdf`;
+      const fileName = `product-marks-codes-${new Date().toISOString().split('T')[0]}.pdf`;
       pdf.save(fileName);
 
       return { success: true, fileName };
     } catch (error) {
-      console.error('Error generating beautiful PDF:', error);
+      console.error('Error generating codes PDF:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+  }
+
+  static async exportAsZPL(productMarks: ProductMarkDetail[]): Promise<{ success: boolean; zplCode?: string; error?: string }> {
+    try {
+      const now = new Date().toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      let zplCode = '';
+      const codesPerPage = 45;
+      const totalPages = Math.ceil(productMarks.length / codesPerPage);
+
+      for (let page = 0; page < totalPages; page++) {
+        zplCode += '^XA\n';
+        zplCode += `^FO4350,3000 ^A0,20,20 ^FD${now}^FS\n`;
+
+        const startIndex = page * codesPerPage;
+        const endIndex = Math.min(startIndex + codesPerPage, productMarks.length);
+        
+        for (let i = startIndex; i < endIndex; i++) {
+          const mark = productMarks[i];
+          const localIndex = i - startIndex;
+          
+          const codesPerRow = 9;
+          const row = Math.floor(localIndex / codesPerRow);
+          const col = localIndex % codesPerRow;
+          
+          const x = 50 + col * 500;
+          const y = 100 + row * 600;
+          const textY = y + 450;
+          
+          if (mark.brandType === 'КМДМ') {
+            zplCode += `^FO${x},${y}^BQN,2,18^FDLA,${mark.brand}^FS\n`;
+          } else {
+            zplCode += `^FO${x},${y} ^BXN,10,200,Y,N,N^FD${mark.brand}^FS\n`;
+          }
+          
+          let smallText = mark.brand;
+          
+          if (mark.brandType === 'КМЧЗ') {
+            const gs1Index = smallText.search(/\\u001[dD]|\u001D/);
+            if (gs1Index !== -1) {
+              smallText = smallText.substring(0, gs1Index);
+            }
+          }
+          
+          zplCode += `^FO${x},${textY} ^A0,25,25 ^FD${smallText}^FS\n`;
+        }
+
+        zplCode += '^XZ\n';
+      }
+
+      return { success: true, zplCode };
+    } catch (error) {
+      console.error('Error generating ZPL code:', error);
+      return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
+    }
+  }
+
+    static async exportZPLAsPDF(productMarks: ProductMarkDetail[]): Promise<{ success: boolean; fileName?: string; error?: string }> {
+    try {
+      const codesPerPage = 45;
+      const totalPages = Math.ceil(productMarks.length / codesPerPage);
+      
+      if (totalPages === 1) {
+        const zplResult = await this.exportAsZPL(productMarks);
+        
+        if (!zplResult.success || !zplResult.zplCode) {
+          return { success: false, error: zplResult.error || 'Failed to generate ZPL code' };
+        }
+
+        const response = await fetch('http://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/pdf',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: zplResult.zplCode
+        });
+
+        if (!response.ok) {
+          throw new Error(`Labelary API error: ${response.status} ${response.statusText}`);
+        }
+
+        const pdfBlob = await response.blob();
+        const url = window.URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `product-marks-labels-${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        return { success: true, fileName: link.download };
+      } else {
+        const pdfBlobs: Blob[] = [];
+        
+        for (let page = 0; page < totalPages; page++) {
+          const startIndex = page * codesPerPage;
+          const endIndex = Math.min(startIndex + codesPerPage, productMarks.length);
+          const pageMarks = productMarks.slice(startIndex, endIndex);
+          
+          const zplResult = await this.exportAsZPL(pageMarks);
+          
+          if (!zplResult.success || !zplResult.zplCode) {
+            return { success: false, error: zplResult.error || 'Failed to generate ZPL code' };
+          }
+
+          const response = await fetch('http://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/pdf',
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: zplResult.zplCode
+          });
+
+          if (!response.ok) {
+            throw new Error(`Labelary API error: ${response.status} ${response.statusText}`);
+          }
+
+          const pdfBlob = await response.blob();
+          pdfBlobs.push(pdfBlob);
+        }
+
+        const { PDFDocument } = await import('pdf-lib');
+        const mergedPdf = await PDFDocument.create();
+        
+        for (const pdfBlob of pdfBlobs) {
+          const pdfBytes = await pdfBlob.arrayBuffer();
+          const pdf = await PDFDocument.load(pdfBytes);
+          const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          copiedPages.forEach((page: any) => mergedPdf.addPage(page));
+        }
+        
+        const mergedPdfBytes = await mergedPdf.save();
+        const mergedPdfBlob = new Blob([mergedPdfBytes as any], { type: 'application/pdf' });
+        
+        const url = window.URL.createObjectURL(mergedPdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `product-marks-labels-${new Date().toISOString().split('T')[0]}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+        return { success: true, fileName: link.download };
+      }
+    } catch (error) {
+      console.error('Error converting ZPL to PDF:', error);
       return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
     }
   }
@@ -341,21 +458,24 @@ export class PDFExportService {
         format: 'a4'
       });
 
+      // Add PT Sans font for Cyrillic support
+      pdf.setFont('courier');
+
       let y = 20;
       const pageHeight = 270;
       const itemHeight = 60; // Height per product mark item
 
       // Add title
       pdf.setFontSize(16);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('courier', 'normal');
       pdf.text(title, 20, y);
       y += 15;
 
       // Add timestamp
       pdf.setFontSize(10);
-      pdf.setFont('helvetica', 'normal');
-      const now = new Date().toLocaleString();
-      pdf.text(`Generated: ${now}`, 20, y);
+      pdf.setFont('courier', 'normal');
+      const now = new Date().toLocaleString('ru-RU');
+      pdf.text(`Создано: ${now}`, 20, y);
       y += 15;
 
       for (const mark of productMarks) {
@@ -370,11 +490,11 @@ export class PDFExportService {
 
         // Product info
         pdf.setFontSize(12);
-        pdf.setFont('helvetica', 'bold');
+        pdf.setFont('courier', 'normal');
         pdf.text(`Product: ${mark.product || 'N/A'}`, 25, y + 10);
         
         pdf.setFontSize(10);
-        pdf.setFont('helvetica', 'normal');
+        pdf.setFont('courier', 'normal');
         pdf.text(`Barcode: ${mark.barcode || 'N/A'}`, 25, y + 18);
         pdf.text(`Supplier Code: ${mark.supplierCode || 'N/A'}`, 25, y + 26);
         pdf.text(`Brand Type: ${mark.brandType}`, 25, y + 34);
@@ -386,6 +506,7 @@ export class PDFExportService {
 
         // DataMatrix info (right side)
         pdf.setFontSize(8);
+        pdf.setFont('courier', 'normal');
         pdf.text('DataMatrix:', 120, y + 10);
         
         // Split datamatrix into multiple lines

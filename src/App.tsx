@@ -74,22 +74,24 @@ function App() {
         return
       }
 
-      console.log('Starting PDF export...');
-      const result = await PDFExportService.exportProductMarksWithImages(productMarks, 'Product Marks Report')
-      console.log('PDF export result:', result);
+      console.log('Starting ZPL PDF export...');
+      const result = await PDFExportService.exportZPLAsPDF(productMarks)
+      console.log('ZPL PDF export result:', result);
       
       if (result.success) {
-        toast({ title: 'Success', description: `PDF exported: ${result.fileName}` })
+        toast({ title: 'Success', description: `ZPL labels exported: ${result.fileName}` })
       } else {
-        toast({ title: 'Error', description: result.error || 'Failed to export PDF', variant: 'destructive' })
+        toast({ title: 'Error', description: result.error || 'Failed to export ZPL labels', variant: 'destructive' })
       }
     } catch (error) {
       console.error('Export error:', error)
-      toast({ title: 'Error', description: 'Failed to export PDF', variant: 'destructive' })
+      toast({ title: 'Error', description: 'Failed to export ZPL labels', variant: 'destructive' })
     } finally {
       setExporting(false)
     }
   }
+
+
 
   const handleCopyShareLink = async () => {
     setShortening(true);
@@ -184,8 +186,9 @@ function App() {
                   ) : (
                     <Download className="h-4 w-4 mr-2" />
                   )}
-                  {loading ? 'Loading...' : 'Export PDF'}
+                  {loading ? 'Loading...' : 'Export Labels'}
                 </Button>
+
                 <Button onClick={handleClearAll} disabled={loading || productMarks.length === 0} variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
                   <Trash2 className="h-4 w-4 mr-2" />
                   Clear All
