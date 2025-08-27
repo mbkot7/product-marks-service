@@ -73,39 +73,11 @@ export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<
   return await shortenUrl(longUrl);
 }
 
-// GitHub token for authenticated requests (can be set via environment variable or localStorage)
-let GITHUB_TOKEN: string | null = null;
+// GitHub token for authenticated requests
+const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN;
 
-// Try to get token from localStorage first, then from environment
 function getGitHubToken(): string | null {
-  if (GITHUB_TOKEN) return GITHUB_TOKEN;
-
-  // Try localStorage
-  const storedToken = localStorage.getItem('github_token');
-  if (storedToken) {
-    GITHUB_TOKEN = storedToken;
-    return storedToken;
-  }
-
-  // Try environment variable (for build time)
-  if ((import.meta as any).env?.VITE_GITHUB_TOKEN) {
-    GITHUB_TOKEN = (import.meta as any).env.VITE_GITHUB_TOKEN;
-    return GITHUB_TOKEN;
-  }
-
-  return null;
-}
-
-// Function to set token
-export function setGitHubToken(token: string): void {
-  GITHUB_TOKEN = token;
-  localStorage.setItem('github_token', token);
-}
-
-// Function to clear token
-export function clearGitHubToken(): void {
-  GITHUB_TOKEN = null;
-  localStorage.removeItem('github_token');
+  return GITHUB_TOKEN || null;
 }
 
 // Interfaces for Gist data

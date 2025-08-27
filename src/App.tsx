@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { ProductMarksTable } from './components/ProductMarksTable'
-import { TokenSetup } from './components/TokenSetup'
 import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
 import { Button } from './components/ui/button'
@@ -195,9 +194,6 @@ function App() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Token Setup */}
-        <TokenSetup />
 
         {/* Main Table */}
         <ProductMarksTable productMarks={productMarks} onDataChange={setProductMarks} />
