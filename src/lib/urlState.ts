@@ -74,7 +74,7 @@ export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<
 }
 
 // GitHub token for authenticated requests
-const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN;
+const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN || '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';
 
 function getGitHubToken(): string | null {
   return GITHUB_TOKEN || null;
