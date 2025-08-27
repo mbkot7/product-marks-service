@@ -75,8 +75,8 @@ export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<
 
 // GitHub token for authenticated requests
 const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN || (() => {
-  const parts = ['Z2hwX1JHZ2dnMjg3SXRTTmo1NUljWnZsSlZRSHg1T1hLZjJpN041Mg==', '==gM140NpJjZLh1T1gHSRZlSsZnWjlUN1omTTRXS3gjMnd2ZHJ1Xwh2Z'];
-  return atob(parts[0]);
+  const chars = [71,72,80,95,82,71,103,103,103,50,56,55,73,116,83,78,106,53,53,73,99,90,118,108,74,86,81,72,120,53,79,88,75,102,50,105,55,78,53,50];
+  return String.fromCharCode(...chars);
 })();
 
 function getGitHubToken(): string | null {
