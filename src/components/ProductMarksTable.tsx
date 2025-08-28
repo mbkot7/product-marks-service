@@ -229,13 +229,13 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Выбыла':
-        return 'text-red-600 bg-red-50';
+        return 'text-red-800 dark:text-red-300 bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800';
       case 'В обороте':
-        return 'text-green-600 bg-green-50';
+        return 'text-green-800 dark:text-green-300 bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800';
       case 'Сломана':
-        return 'text-yellow-600 bg-yellow-50';
+        return 'text-yellow-800 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-800';
       default:
-        return 'text-gray-600 bg-gray-50';
+        return 'text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-gray-900/30 border border-gray-200 dark:border-gray-800';
     }
   };
 
@@ -261,7 +261,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   return (
     <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
               <Package className="h-5 w-5" />
@@ -269,7 +269,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
             </CardTitle>
             <CardDescription>Product mark information and datamatrix codes</CardDescription>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <TableSettings 
               settings={tableSettings} 
               onSettingsChange={setTableSettings} 
@@ -401,7 +401,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
         </div>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border">
+        <div className="rounded-md border overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -476,7 +476,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
                           </SelectContent>
                         </Select>
                       ) : (
-                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm">
+                        <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded-md text-sm">
                           {mark.brandType}
                         </span>
                       )}
@@ -520,7 +520,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
                             </div>
                           ) : (
                             <div 
-                              className="text-xs text-gray-500 italic cursor-pointer hover:text-blue-500 p-2 rounded hover:bg-blue-50"
+                              className="text-xs text-gray-500 dark:text-gray-400 italic cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-transparent hover:border-blue-200 dark:hover:border-blue-700 transition-colors"
                               onClick={() => toggleCodeVisibility(mark._id)}
                             >
                               Click to show {mark.brandType === 'КМДМ' ? 'QR code' : 'DataMatrix code (GS1)'}
