@@ -11,6 +11,7 @@ import { Plus, Save, Package, Upload, Edit, Trash2, X, Eye, EyeOff } from 'lucid
 import { ProductMarkDetail, BRAND_TYPES, MARK_STATUSES } from '@/types/ProductMark';
 import { storage } from '@/lib/storage';
 import { CodeDisplay } from './CodeDisplay';
+import { TableSettings, TableSettings as TableSettingsType } from './TableSettings';
 import { useToast } from '@/hooks/useToast';
 
 interface ProductMarksTableProps {
@@ -31,6 +32,16 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   const [showAllCodes, setShowAllCodes] = useState(false);
   const [visibleCodes, setVisibleCodes] = useState<Set<string>>(new Set());
   const [decodeBase64, setDecodeBase64] = useState(false);
+  const [tableSettings, setTableSettings] = useState<TableSettingsType>({
+    showProduct: true,
+    showBarcode: true,
+    showSupplierCode: true,
+    showBrandType: true,
+    showBrand: true,
+    showDatamatrix: true,
+    showStatus: true,
+    brandColumnWidth: 200,
+  });
   const { toast } = useToast();
 
   const decodeBase64String = (str: string): string => {
@@ -259,6 +270,10 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
             <CardDescription>Product mark information and datamatrix codes</CardDescription>
           </div>
           <div className="flex items-center gap-2">
+            <TableSettings 
+              settings={tableSettings} 
+              onSettingsChange={setTableSettings} 
+            />
             <Button
               variant="outline"
               size="sm"
@@ -390,142 +405,156 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Товар</TableHead>
-                <TableHead>Штрих-код</TableHead>
-                <TableHead>Код поставщика</TableHead>
-                <TableHead>Тип марки</TableHead>
-                <TableHead>Марка</TableHead>
-                <TableHead>QR/DataMatrix код</TableHead>
-                <TableHead>Статус</TableHead>
+                {tableSettings.showProduct && <TableHead>Товар</TableHead>}
+                {tableSettings.showBarcode && <TableHead>Штрих-код</TableHead>}
+                {tableSettings.showSupplierCode && <TableHead>Код поставщика</TableHead>}
+                {tableSettings.showBrandType && <TableHead>Тип марки</TableHead>}
+                {tableSettings.showBrand && <TableHead style={{ width: `${tableSettings.brandColumnWidth}px` }}>Марка</TableHead>}
+                {tableSettings.showDatamatrix && <TableHead>QR/DataMatrix код</TableHead>}
+                {tableSettings.showStatus && <TableHead>Статус</TableHead>}
                 <TableHead className="text-right">Действия</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {productMarks.map((mark) => (
                 <TableRow key={mark._id}>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Input
-                        value={editData.product || ''}
-                        onChange={(e) => setEditData({ ...editData, product: e.target.value })}
-                        className="w-full"
-                      />
-                    ) : (
-                      mark.product
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Input
-                        value={editData.barcode || ''}
-                        onChange={(e) => setEditData({ ...editData, barcode: e.target.value })}
-                        className="w-full"
-                      />
-                    ) : (
-                      mark.barcode
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Input
-                        value={editData.supplierCode || ''}
-                        onChange={(e) => setEditData({ ...editData, supplierCode: e.target.value })}
-                        className="w-full"
-                      />
-                    ) : (
-                      mark.supplierCode
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Select
-                        value={editData.brandType || mark.brandType}
-                        onValueChange={(value) => setEditData({ ...editData, brandType: value as 'КМДМ' | 'КМЧЗ' })}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {BRAND_TYPES.map((type) => (
-                            <SelectItem key={type} value={type}>
-                              {type}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm">
-                        {mark.brandType}
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Input
-                        value={editData.brand || ''}
-                        onChange={(e) => setEditData({ ...editData, brand: e.target.value })}
-                        className="w-full"
-                      />
-                    ) : (
-                      <div className="font-mono text-sm break-all max-w-[200px]">
-                        {mark.brand}
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Textarea
-                        value={editData.datamatrix || ''}
-                        onChange={(e) => setEditData({ ...editData, datamatrix: e.target.value })}
-                        className="w-full min-h-[60px] font-mono text-xs"
-                      />
-                    ) : (
-                      <div className="space-y-2">
-                        {showAllCodes || visibleCodes.has(mark._id) ? (
-                          <div 
-                            className="cursor-pointer"
-                            onClick={() => toggleCodeVisibility(mark._id)}
-                          >
-                            <CodeDisplay 
-                              data={mark.brand} 
-                              brandType={getBrandType(editingRow, editData, mark)}
-                              size={80}
-                            />
-                          </div>
-                        ) : (
-                          <div 
-                            className="text-xs text-gray-500 italic cursor-pointer hover:text-blue-500 p-2 rounded hover:bg-blue-50"
-                            onClick={() => toggleCodeVisibility(mark._id)}
-                          >
-                            Click to show {mark.brandType === 'КМДМ' ? 'QR code' : 'DataMatrix code (GS1)'}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editingRow === mark._id ? (
-                      <Select
-                        value={editData.status || mark.status}
-                        onValueChange={(value) => setEditData({ ...editData, status: value as typeof MARK_STATUSES[number] })}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {MARK_STATUSES.map((status) => (
-                            <SelectItem key={status} value={status}>
-                              {status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <span className={`px-2 py-1 rounded-md text-sm ${getStatusColor(mark.status)}`}>
-                        {mark.status}
-                      </span>
-                    )}
-                  </TableCell>
+                  {tableSettings.showProduct && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Input
+                          value={editData.product || ''}
+                          onChange={(e) => setEditData({ ...editData, product: e.target.value })}
+                          className="w-full"
+                        />
+                      ) : (
+                        mark.product
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showBarcode && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Input
+                          value={editData.barcode || ''}
+                          onChange={(e) => setEditData({ ...editData, barcode: e.target.value })}
+                          className="w-full"
+                        />
+                      ) : (
+                        mark.barcode
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showSupplierCode && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Input
+                          value={editData.supplierCode || ''}
+                          onChange={(e) => setEditData({ ...editData, supplierCode: e.target.value })}
+                          className="w-full"
+                        />
+                      ) : (
+                        mark.supplierCode
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showBrandType && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Select
+                          value={editData.brandType || mark.brandType}
+                          onValueChange={(value) => setEditData({ ...editData, brandType: value as 'КМДМ' | 'КМЧЗ' })}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {BRAND_TYPES.map((type) => (
+                              <SelectItem key={type} value={type}>
+                                {type}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm">
+                          {mark.brandType}
+                        </span>
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showBrand && (
+                    <TableCell style={{ width: `${tableSettings.brandColumnWidth}px` }}>
+                      {editingRow === mark._id ? (
+                        <Input
+                          value={editData.brand || ''}
+                          onChange={(e) => setEditData({ ...editData, brand: e.target.value })}
+                          className="w-full"
+                        />
+                      ) : (
+                        <div className="font-mono text-sm break-all" style={{ maxWidth: `${tableSettings.brandColumnWidth}px` }}>
+                          {mark.brand}
+                        </div>
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showDatamatrix && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Textarea
+                          value={editData.datamatrix || ''}
+                          onChange={(e) => setEditData({ ...editData, datamatrix: e.target.value })}
+                          className="w-full min-h-[60px] font-mono text-xs"
+                        />
+                      ) : (
+                        <div className="space-y-2">
+                          {showAllCodes || visibleCodes.has(mark._id) ? (
+                            <div 
+                              className="cursor-pointer"
+                              onClick={() => toggleCodeVisibility(mark._id)}
+                            >
+                              <CodeDisplay 
+                                data={mark.brand} 
+                                brandType={getBrandType(editingRow, editData, mark)}
+                                size={80}
+                              />
+                            </div>
+                          ) : (
+                            <div 
+                              className="text-xs text-gray-500 italic cursor-pointer hover:text-blue-500 p-2 rounded hover:bg-blue-50"
+                              onClick={() => toggleCodeVisibility(mark._id)}
+                            >
+                              Click to show {mark.brandType === 'КМДМ' ? 'QR code' : 'DataMatrix code (GS1)'}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </TableCell>
+                  )}
+                  {tableSettings.showStatus && (
+                    <TableCell>
+                      {editingRow === mark._id ? (
+                        <Select
+                          value={editData.status || mark.status}
+                          onValueChange={(value) => setEditData({ ...editData, status: value as typeof MARK_STATUSES[number] })}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {MARK_STATUSES.map((status) => (
+                              <SelectItem key={status} value={status}>
+                                {status}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <span className={`px-2 py-1 rounded-md text-sm ${getStatusColor(mark.status)}`}>
+                          {mark.status}
+                        </span>
+                      )}
+                    </TableCell>
+                  )}
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-2">
                       {editingRow === mark._id ? (
