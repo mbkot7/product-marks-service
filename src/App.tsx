@@ -12,36 +12,30 @@ import { createSmartShareLink, loadFromGist, extractStateFromLocation } from './
 function App() {
   const { toast, toasts, removeToast } = useToast()
   const [exporting, setExporting] = useState(false)
-  const [loading, setLoading] = useState(true) // Start with loading true
-  const [shortening, setShortening] = useState(false) // For URL shortening
+  const [loading, setLoading] = useState(true)
+  const [shortening, setShortening] = useState(false)
   const [productMarks, setProductMarks] = useState(storage.getProductMarks())
   
-  // Debug log to check if React is working
   console.log('App component loaded!')
   
-  // Load from URL state on first mount
   useEffect(() => {
     const loadData = async () => {
       try {
-        // First try to load from Gist
         const fromGist = await loadFromGist();
         if (fromGist && fromGist.length > 0) {
           storage.saveProductMarks(fromGist);
           setProductMarks(fromGist);
           toast({ title: 'Loaded from Gist', description: `Restored ${fromGist.length} marks from GitHub Gist` });
-          // Clean URL but keep path
           const clean = `${window.location.origin}${window.location.pathname}`;
           window.history.replaceState({}, '', clean);
           return;
         }
 
-        // Fallback to regular URL state
         const fromUrl = extractStateFromLocation();
         if (fromUrl && fromUrl.length > 0) {
           storage.saveProductMarks(fromUrl);
           setProductMarks(fromUrl);
           toast({ title: 'Loaded from link', description: `Restored ${fromUrl.length} marks from the URL` });
-          // Clean URL but keep path
           const clean = `${window.location.origin}${window.location.pathname}`;
           window.history.replaceState({}, '', clean);
         }
@@ -53,10 +47,8 @@ function App() {
     };
 
     loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
-  // Update product marks when storage changes
   useEffect(() => {
     const handleStorageChange = () => {
       setProductMarks(storage.getProductMarks())

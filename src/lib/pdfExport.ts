@@ -2,7 +2,6 @@ import jsPDF from 'jspdf';
 import { ProductMarkDetail } from '@/types/ProductMark';
 import { CodeGenerator } from '@/lib/codeGenerator';
 
-// Add Unicode support for jsPDF
 import 'jspdf/dist/polyfills.es.js';
 
 export class PDFExportService {
@@ -15,27 +14,22 @@ export class PDFExportService {
         format: 'a4'
       });
 
-      // Use built-in font with Unicode support
       pdf.setFont('courier');
 
-      // Add title
       pdf.setFontSize(16);
       pdf.setFont('courier', 'normal');
       pdf.text(title, 20, 20);
 
-      // Add timestamp
       pdf.setFontSize(10);
       pdf.setFont('courier', 'normal');
       const now = new Date().toLocaleString('en-GB');
       pdf.text(`Generated: ${now}`, 20, 30);
 
-      // Table headers with Unicode support
       const headers = [
         'Product', 'Barcode', 'Supplier Code', 'Brand Type', 
         'Brand', 'Datamatrix', 'Status', 'Created'
       ];
 
-      // Table data
       const data = productMarks.map(mark => [
         mark.product || '-',
         mark.barcode || '-',
@@ -47,13 +41,11 @@ export class PDFExportService {
         new Date(mark.createdAt).toLocaleDateString('ru-RU')
       ]);
 
-      // Simple table implementation
       let y = 45;
       const rowHeight = 8;
-      const colWidths = [20, 20, 20, 15, 30, 35, 20, 20]; // Column widths
+      const colWidths = [20, 20, 20, 15, 30, 35, 20, 20];
       let x = 20;
 
-      // Draw headers
       pdf.setFontSize(8);
       pdf.setFont('courier', 'normal');
       headers.forEach((header, i) => {
@@ -64,12 +56,10 @@ export class PDFExportService {
 
       y += rowHeight;
 
-      // Draw data rows
       pdf.setFont('courier', 'normal');
       data.forEach((row) => {
         x = 20;
         
-        // Check if we need a new page
         if (y > 180) {
           pdf.addPage();
           y = 20;
@@ -83,7 +73,6 @@ export class PDFExportService {
         y += rowHeight;
       });
 
-      // Add footer
       const pageCount = pdf.getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
         pdf.setPage(i);
@@ -92,7 +81,6 @@ export class PDFExportService {
         pdf.text(`Total records: ${productMarks.length}`, 20, 200);
       }
 
-      // Download the PDF
       const fileName = `product-marks-${new Date().toISOString().split('T')[0]}.pdf`;
       pdf.save(fileName);
 
@@ -112,21 +100,18 @@ export class PDFExportService {
         format: 'a4'
       });
 
-      // Use built-in font with Unicode support
       pdf.setFont('courier');
 
       let y = 20;
 
-      // Add title with clean styling
-      pdf.setFillColor(51, 51, 51); // Dark grey background
+      pdf.setFillColor(51, 51, 51);
       pdf.rect(15, 10, 180, 15, 'F');
-      pdf.setTextColor(255, 255, 255); // White text
+      pdf.setTextColor(255, 255, 255);
       pdf.setFontSize(14);
       pdf.setFont('courier', 'normal');
       pdf.text(title, 20, 20);
       
-      // Add timestamp
-      pdf.setTextColor(100, 100, 100); // Grey text
+      pdf.setTextColor(100, 100, 100);
       pdf.setFontSize(9);
       pdf.setFont('courier', 'normal');
       const now = new Date().toLocaleString('en-GB', {
@@ -139,30 +124,25 @@ export class PDFExportService {
       pdf.text(`Generated: ${now}`, 20, y + 15);
       y += 25;
 
-      // Grid layout: 10 columns x 4 rows = 40 codes per page
       const codesPerRow = 10;
       const rowsPerPage = 4;
-      const codeSize = 16; // Size of each code
-      const codeSpacing = 2; // Spacing between codes
-      const textHeight = 8; // Height for text below code
-      const totalCodeHeight = codeSize + textHeight + 4; // Total height per code
+      const codeSize = 16;
+      const codeSpacing = 2;
+      const textHeight = 8;
+      const totalCodeHeight = codeSize + textHeight + 4;
       
-      // Calculate starting position to center the grid
-      const pageWidth = 210; // A4 width in mm
+      const pageWidth = 210;
       const totalGridWidth = codesPerRow * codeSize + (codesPerRow - 1) * codeSpacing;
       const startX = (pageWidth - totalGridWidth) / 2;
 
-      // Process each mark
       for (let i = 0; i < productMarks.length; i++) {
         const mark = productMarks[i];
         
-        // Check if we need a new page
         if (i > 0 && i % (codesPerRow * rowsPerPage) === 0) {
           pdf.addPage();
           y = 20;
         }
 
-        // Calculate position in grid
         const gridIndex = i % (codesPerRow * rowsPerPage);
         const row = Math.floor(gridIndex / codesPerRow);
         const col = gridIndex % codesPerRow;
@@ -170,16 +150,12 @@ export class PDFExportService {
         const x = startX + col * (codeSize + codeSpacing);
         const currentY = y + row * totalCodeHeight;
 
-        // Generate and add QR/DataMatrix code
         try {
           if (mark.brandType === 'КМДМ') {
-            // Generate QR code locally
             const codeDataUrl = await CodeGenerator.generateQRCode(mark.brand, 100);
             
-            // Add the QR code image
             pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
             
-            // Add the full code below the image
             pdf.setFontSize(6);
             pdf.setTextColor(80, 80, 80);
             const codeText = mark.brand;
@@ -187,7 +163,6 @@ export class PDFExportService {
             pdf.text(codeText, centerX - (codeText.length * 1.5), currentY + codeSize + 4);
             pdf.setTextColor(0, 0, 0);
           } else {
-            // Generate DataMatrix using TEC-IT API
             const hasGS1 = mark.brand.includes('\\u001D') || mark.brand.includes('\u001D');
             let processedData = mark.brand.trim();
             
@@ -198,7 +173,6 @@ export class PDFExportService {
                 .replace(/\\u001d/g, String.fromCharCode(29));
             }
             
-            // Ensure data is not empty
             if (!processedData || processedData.length === 0) {
               throw new Error('Empty data for DataMatrix');
             }
@@ -208,7 +182,6 @@ export class PDFExportService {
               ? `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L&dpi=96&imgsize=6`
               : `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L&dpi=96&imgsize=6`;
             
-            // Try to load DataMatrix image
             let codeDataUrl: string | undefined;
             try {
               const timeoutPromise = new Promise<never>((_, reject) => {

@@ -33,13 +33,11 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   const [decodeBase64, setDecodeBase64] = useState(false);
   const { toast } = useToast();
 
-  // Component now receives data via props
-
   const decodeBase64String = (str: string): string => {
     try {
       return atob(str);
     } catch (error) {
-      return str; // Return original string if decoding fails
+      return str;
     }
   };
 
@@ -100,7 +98,6 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
       return;
     }
 
-    // Filter out duplicates - check if brand code already exists in productMarks
     const existingBrands = new Set(productMarks.map(mark => mark.brand));
     const newCodes = parsedData.filter(code => {
       const brand = code.substring(0, 13);
@@ -268,7 +265,6 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
               onClick={() => {
                 setShowAllCodes(!showAllCodes);
                 if (!showAllCodes) {
-                  // If showing all codes, clear individual visibility
                   setVisibleCodes(new Set());
                 }
               }}
