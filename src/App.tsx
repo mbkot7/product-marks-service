@@ -168,7 +168,7 @@ function App() {
           </div>
 
           {/* Global Search */}
-          <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg">
+          <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg high-contrast:border-4 high-contrast:border-black">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
@@ -188,7 +188,7 @@ function App() {
           </Card>
 
           {/* Stats and Actions */}
-          <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg">
+          <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg high-contrast:border-4 high-contrast:border-black">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />

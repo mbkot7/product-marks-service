@@ -259,7 +259,7 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   };
 
   return (
-    <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg">
+    <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg high-contrast:border-4 high-contrast:border-black">
       <CardHeader>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>

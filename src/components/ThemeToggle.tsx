@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Moon, Sun, Monitor } from 'lucide-react';
+import { Moon, Sun, Contrast } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
 export function ThemeToggle() {
@@ -8,7 +8,7 @@ export function ThemeToggle() {
   const themes = [
     { id: 'light', icon: Sun, label: 'Light' },
     { id: 'dark', icon: Moon, label: 'Dark' },
-    { id: 'high-contrast', icon: Monitor, label: 'High Contrast' },
+    { id: 'high-contrast', icon: Contrast, label: 'High Contrast' },
   ] as const;
 
   const handleThemeChange = (newTheme: 'light' | 'dark' | 'high-contrast') => {
