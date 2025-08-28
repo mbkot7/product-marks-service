@@ -365,7 +365,7 @@ export class PDFExportService {
           return { success: false, error: zplResult.error || 'Failed to generate ZPL code' };
         }
 
-        const response = await fetch('http://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
+        const response = await fetch('https://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
           method: 'POST',
           headers: {
             'Accept': 'application/pdf',
@@ -403,7 +403,7 @@ export class PDFExportService {
             return { success: false, error: zplResult.error || 'Failed to generate ZPL code' };
           }
 
-          const response = await fetch('http://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
+          const response = await fetch('https://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/', {
             method: 'POST',
             headers: {
               'Accept': 'application/pdf',
