@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { ProductMarksTable } from './components/ProductMarksTable'
+import { PrintDialog } from './components/PrintDialog'
 import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
 import { Button } from './components/ui/button'
@@ -164,6 +165,7 @@ function App() {
                 <span>Broken: {productMarks.filter(m => m.status === 'Сломана').length}</span>
               </div>
               <div className="flex items-center gap-2">
+                <PrintDialog productMarks={productMarks} />
                 <Button onClick={handleCopyShareLink} disabled={loading || shortening} variant="outline" size="sm">
                   {shortening ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
