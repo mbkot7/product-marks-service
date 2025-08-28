@@ -30,9 +30,18 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
   const [deleting, setDeleting] = useState<string | null>(null);
   const [showAllCodes, setShowAllCodes] = useState(false);
   const [visibleCodes, setVisibleCodes] = useState<Set<string>>(new Set());
+  const [decodeBase64, setDecodeBase64] = useState(false);
   const { toast } = useToast();
 
   // Component now receives data via props
+
+  const decodeBase64String = (str: string): string => {
+    try {
+      return atob(str);
+    } catch (error) {
+      return str; // Return original string if decoding fails
+    }
+  };
 
   const parseBulkData = () => {
     if (!bulkData.trim()) {
@@ -51,7 +60,8 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
       lines.forEach((line) => {
         const trimmedLine = line.trim();
         if (trimmedLine) {
-          parsed.push(trimmedLine);
+          const decodedLine = decodeBase64 ? decodeBase64String(trimmedLine) : trimmedLine;
+          parsed.push(decodedLine);
         }
       });
 
@@ -302,6 +312,18 @@ export function ProductMarksTable({ productMarks, onDataChange }: ProductMarksTa
                           placeholder="0104610037130258215(lCi:R_B(>N.\u001D91FFD0\u001D92dGVzdNbKbLZNM/OYkf4ac7XcCyE76PzN6ihNuexutiI="
                           className="min-h-[120px] font-mono text-sm"
                         />
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="decodeBase64"
+                          checked={decodeBase64}
+                          onChange={(e) => setDecodeBase64(e.target.checked)}
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <Label htmlFor="decodeBase64" className="text-sm">
+                          Decode from base64
+                        </Label>
                       </div>
                       <div className="flex gap-2">
                         <Button
