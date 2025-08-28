@@ -42,18 +42,18 @@ export function PrintDialog({ productMarks }: PrintDialogProps) {
 
     setIsPrinting(true);
     try {
-      // Generate PDF for printing
-      const result = await PDFExportService.exportZPLAsPDF(productMarks);
+      // Generate ZPL code first
+      const zplResult = await PDFExportService.exportAsZPL(productMarks);
       
-      if (result.success && result.fileName) {
-        // Create a blob URL for the PDF
+      if (zplResult.success && zplResult.zplCode) {
+        // Create a blob URL for the PDF without downloading
         const response = await fetch(`https://api.labelary.com/v1/printers/12dpmm/labels/15x10/0/`, {
           method: 'POST',
           headers: {
             'Accept': 'application/pdf',
             'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: await PDFExportService.exportAsZPL(productMarks).then(r => r.zplCode || '')
+          body: zplResult.zplCode
         });
 
         if (response.ok) {
