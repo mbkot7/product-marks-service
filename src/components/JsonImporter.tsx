@@ -33,7 +33,13 @@ export function JsonImporter({ onImport }: JsonImporterProps) {
       const text = await file.text();
       const jsonData = JSON.parse(text);
 
+      console.log('Parsed JSON data:', jsonData);
+      console.log('Has products array:', Array.isArray(jsonData.products));
+      console.log('Products length:', jsonData.products?.length);
+      console.log('First product:', jsonData.products?.[0]);
+
       if (!validateImportData(jsonData)) {
+        console.error('Validation failed for:', jsonData);
         throw new Error('Неверный формат JSON файла. Ожидается структура с массивом products');
       }
 
@@ -102,7 +108,7 @@ export function JsonImporter({ onImport }: JsonImporterProps) {
       <CardHeader>
         <CardTitle>Импорт из JSON</CardTitle>
         <CardDescription>
-          Загрузите JSON файл с данными о марках товаров
+          Загрузите JSON файл образа ответа из mc_order_start_picking
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -157,7 +163,7 @@ export function JsonImporter({ onImport }: JsonImporterProps) {
             </div>
             
             <p className="text-xs text-gray-500">
-              Поддерживается формат JSON с массивом products
+              Поддерживается формат JSON с формат ответа из mc_order_start_picking
             </p>
           </div>
         </div>

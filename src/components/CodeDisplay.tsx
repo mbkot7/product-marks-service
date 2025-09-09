@@ -79,7 +79,8 @@ function QRCodeDisplay({ data, size }: { data: string; size: number }) {
 }
 
 function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
-  const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#');
+  const gs = String.fromCharCode(29);
+  const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#') || data.includes(gs);
   
   let processedData: string;
   let barcodeUrl: string;

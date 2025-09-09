@@ -23,10 +23,9 @@ export class CodeGenerator {
 
   static async generateDataMatrix(data: string, size: number = 200): Promise<string> {
     try {
-      const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#');
-      let processedData = data.trim();
-
       const gs = String.fromCharCode(29);
+      const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#') || data.includes(gs);
+      let processedData = data.trim();
       
       if (hasGS1) {
         processedData = processedData
