@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { importFromJson, validateImportData, ImportResponse } from '@/lib/jsonImporter';
+import { importFromJson, validateImportData, ImportResponse, ResponseData } from '@/lib/jsonImporter';
 import { ProductMarkDetail } from '@/types/ProductMark';
 import { useToast } from '@/hooks/useToast';
 
@@ -37,7 +37,7 @@ export function JsonImporter({ onImport }: JsonImporterProps) {
         throw new Error('Неверный формат JSON файла. Ожидается структура с массивом products');
       }
 
-      const productMarks = importFromJson(jsonData as ImportResponse);
+      const productMarks = importFromJson(jsonData as ImportResponse | ResponseData);
       
       if (productMarks.length === 0) {
         toast({

@@ -1,0 +1,119 @@
+{
+  "id": 6509000362,
+  "storeCode": "5240",
+  "storeName": "Отдел разработки цифровых решений для сотрудников",
+  "task": "Подтвердить",
+  "type": "O2",
+  "typeName": "Самовывоз",
+  "status": "SHIPPED",
+  "statusName": "Отгружен",
+  "goodsNumber": 48,
+  "productsNumber": 8,
+  "createdAt": 1756981953000,
+  "createdDateTime": "2025-09-04T13:32:33+03:00",
+  "deadlineAt": 1758370860000,
+  "deadlineDateTime": "2025-09-20T15:21:00+03:00",
+  "storeUntil": 1758758400000,
+  "storeUntilDateTime": "2025-09-25T03:00:00+03:00",
+  "userStartPicked": "vzadorozhny",
+  "currencySymbol": "RUB",
+  "totalPrice": "164604.00",
+  "products": [
+    {
+      "id": "000008",
+      "productCode": "1000651647",
+      "productName": "Наклейки Acoola",
+      "sku": "20206540037_0067648",
+      "categories": [
+        "Канцелярия, книги, мультимедиа",
+        "Книги",
+        "Досуг и творчество",
+        "Наклейки"
+      ],
+      "price": "0.00",
+      "store": -67,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "4680174024635"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "ACOOLA",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "book": {
+        "ageCategory": null,
+        "subCategory": "Досуг и творчество"
+      },
+      "tnp1": "X",
+      "vendorCode": "0175055173",
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTA0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTIz"
+      ]
+    },
+    {
+      "id": "000007",
+      "productCode": "1000652172",
+      "productName": "Молоко сухое Иван-поле обезжиренное 10 л",
+      "sku": "30162229",
+      "categories": [
+        "Питание",
+        "Правильное питание",
+        "Напитки",
+        "Вместо молока"
+      ],
+      "price": "0.00",
+      "store": -44,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "6942301000331"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Иван-поле",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "tnp1": "X",
+      "vendorCode": "0175032347",
+      "markcodes": [
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5NaGJOHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5jO1VLHTkzZEdWeg=="
+      ]
+    }
+  ],
+  "availableSectors": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2",
+    "D1",
+    "D2",
+    "E1",
+    "E2",
+    "SA1",
+    "SB1",
+    "SC1",
+    "SD1",
+    "SE1"
+  ],
+  "prepaid": true,
+  "replaceSoftCheck": false,
+  "prolongAllow": false
+}

@@ -14,6 +14,33 @@ export interface ImportResponse {
   products: ImportedProduct[];
 }
 
+export interface ResponseData {
+  id?: number;
+  storeCode?: string;
+  storeName?: string;
+  task?: string;
+  type?: string;
+  typeName?: string;
+  status?: string;
+  statusName?: string;
+  goodsNumber?: number;
+  productsNumber?: number;
+  createdAt?: number;
+  createdDateTime?: string;
+  deadlineAt?: number;
+  deadlineDateTime?: string;
+  storeUntil?: number;
+  storeUntilDateTime?: string;
+  userStartPicked?: string;
+  currencySymbol?: string;
+  totalPrice?: string;
+  products: ImportedProduct[];
+  availableSectors?: string[];
+  prepaid?: boolean;
+  replaceSoftCheck?: boolean;
+  prolongAllow?: boolean;
+}
+
 /**
  * Декодирует base64 строку в обычную строку
  */
@@ -74,7 +101,7 @@ export function convertToProductMarks(importedProducts: ImportedProduct[]): Prod
 /**
  * Импортирует данные из JSON файла
  */
-export function importFromJson(jsonData: ImportResponse): ProductMarkDetail[] {
+export function importFromJson(jsonData: ImportResponse | ResponseData): ProductMarkDetail[] {
   try {
     console.log('Importing data from JSON:', jsonData);
     
@@ -96,21 +123,30 @@ export function importFromJson(jsonData: ImportResponse): ProductMarkDetail[] {
 /**
  * Валидирует структуру JSON данных
  */
-export function validateImportData(data: any): data is ImportResponse {
+export function validateImportData(data: any): data is ImportResponse | ResponseData {
   if (!data || typeof data !== 'object') {
     return false;
   }
   
+  // Проверяем, что есть массив products
   if (!Array.isArray(data.products)) {
     return false;
   }
   
+  // Проверяем, что массив products не пустой
+  if (data.products.length === 0) {
+    return false;
+  }
+  
+  // Проверяем структуру каждого продукта
   return data.products.every((product: any) => 
     typeof product === 'object' &&
+    product !== null &&
     typeof product.id === 'string' &&
     typeof product.productCode === 'string' &&
     Array.isArray(product.barcodes) &&
     typeof product.vendorCode === 'string' &&
-    Array.isArray(product.markcodes)
+    Array.isArray(product.markcodes) &&
+    product.markcodes.length > 0
   );
 }
