@@ -90,11 +90,17 @@ function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
     // Process GS1 data to handle separator characters correctly
     console.log('Processing GS1 data:', data);
 
-    // Replace Unicode escape sequences with actual GS1 separator character (ASCII 29)
+    // Define GS1 separator character (ASCII 29)
+    const gs = String.fromCharCode(29);
+    
+    // Replace Unicode escape sequences with actual GS1 separator character
     processedData = data
-      .replace(/\\u001[dD]/g, String.fromCharCode(29)) // Handle \u001D and \u001d
-      .replace(/\\u001D/g, String.fromCharCode(29))    // Handle \u001D specifically
-      .replace(/\\u001d/g, String.fromCharCode(29));   // Handle \u001d specifically
+      .replace(/\\u001[dD]/g, gs) // Handle \u001D and \u001d
+      .replace(/\\u001D/g, gs)    // Handle \u001D specifically
+      .replace(/\\u001d/g, gs);   // Handle \u001d specifically
+
+    // Prepend GS1 separator to the beginning of the string for proper GS1 format
+    processedData = gs + processedData;
 
     console.log('Processed GS1 data:', processedData);
     
