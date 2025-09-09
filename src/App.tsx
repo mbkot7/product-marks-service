@@ -3,12 +3,13 @@ import { ProductMarksTable } from './components/ProductMarksTable'
 import { PrintDialog } from './components/PrintDialog'
 import { GlobalSearch } from './components/GlobalSearch'
 import { ThemeToggle } from './components/ThemeToggle'
+import { JsonImporter } from './components/JsonImporter'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { Toaster } from './components/ui/toaster'
 import { useToast } from './hooks/useToast'
 import { Button } from './components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
-import { Download, FileText, Package, Trash2, Link2 } from 'lucide-react'
+import { Download, FileText, Package, Trash2, Link2, Upload } from 'lucide-react'
 import { ProductMarkDetail } from './types/ProductMark'
 import { storage } from './lib/storage'
 import { PDFExportService } from './lib/pdfExport'
@@ -22,6 +23,7 @@ function App() {
   const [productMarks, setProductMarks] = useState(storage.getProductMarks())
   const [filteredMarks, setFilteredMarks] = useState<ProductMarkDetail[]>(productMarks)
   const [isSearching, setIsSearching] = useState(false)
+  const [showImporter, setShowImporter] = useState(false)
   
   console.log('App component loaded!')
   
@@ -147,6 +149,20 @@ function App() {
     setIsSearching(false);
   };
 
+  const handleImport = (importedMarks: ProductMarkDetail[]) => {
+    const existingMarks = storage.getProductMarks();
+    const allMarks = [...existingMarks, ...importedMarks];
+    
+    storage.saveProductMarks(allMarks);
+    setProductMarks(allMarks);
+    
+    if (!isSearching) {
+      setFilteredMarks(allMarks);
+    }
+    
+    setShowImporter(false);
+  };
+
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 high-contrast:from-white high-contrast:via-white high-contrast:to-white transition-colors">
@@ -210,6 +226,10 @@ function App() {
                   <span>Broken: {productMarks.filter(m => m.status === 'Сломана').length}</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
+                  <Button onClick={() => setShowImporter(!showImporter)} variant="outline" size="sm">
+                    <Upload className="h-4 w-4 mr-2" />
+                    Import JSON
+                  </Button>
                   <PrintDialog productMarks={productMarks} />
                   <Button onClick={handleCopyShareLink} disabled={loading || shortening} variant="outline" size="sm">
                     {shortening ? (
@@ -236,6 +256,17 @@ function App() {
               </div>
             </CardContent>
           </Card>
+
+          {/* JSON Importer */}
+          {showImporter && (
+            <Card className="backdrop-blur-sm bg-card/50 border-0 shadow-lg high-contrast:border-4 high-contrast:border-black">
+              <CardContent className="pt-6">
+                <div className="flex justify-center">
+                  <JsonImporter onImport={handleImport} />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Main Table */}
           <ProductMarksTable productMarks={filteredMarks} onDataChange={setProductMarks} />

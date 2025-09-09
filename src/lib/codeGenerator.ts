@@ -23,7 +23,7 @@ export class CodeGenerator {
 
   static async generateDataMatrix(data: string, size: number = 200): Promise<string> {
     try {
-      const hasGS1 = data.includes('\\u001D') || data.includes('\u001D');
+      const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#');
       let processedData = data.trim();
 
       const gs = String.fromCharCode(29);
@@ -32,8 +32,11 @@ export class CodeGenerator {
         processedData = processedData
           .replace(/\\u001[dD]/g, gs)
           .replace(/\\u001D/g, gs)
-          .replace(/\\u001d/g, gs);
-          processedData = processedData;
+          .replace(/\\u001d/g, gs)
+          .replace(/#/g, gs);
+      } else {
+        // If no GS1 separators found, add gs at the beginning and end
+        processedData = gs + processedData + gs;
       }
       
       const encodedData = encodeURIComponent(processedData);

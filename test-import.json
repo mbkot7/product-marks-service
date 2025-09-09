@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": "000008",
+      "productCode": "1000651647",
+      "productName": "Наклейки Acoola",
+      "barcodes": ["4680174024635"],
+      "vendorCode": "0175055173",
+      "brand": "ACOOLA",
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTA0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTIz"
+      ]
+    },
+    {
+      "id": "000007",
+      "productCode": "1000652172",
+      "productName": "Молоко сухое Иван-поле обезжиренное 10 л",
+      "barcodes": ["6942301000331"],
+      "vendorCode": "0175032347",
+      "brand": "Иван-поле",
+      "markcodes": [
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5NaGJOHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5jO1VLHTkzZEdWeg=="
+      ]
+    }
+  ]
+}

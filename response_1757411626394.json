@@ -1,0 +1,667 @@
+{
+  "id": 6509000362,
+  "storeCode": "5240",
+  "storeName": "Отдел разработки цифровых решений для сотрудников",
+  "task": "Подтвердить",
+  "type": "O2",
+  "typeName": "Самовывоз",
+  "status": "SHIPPED",
+  "statusName": "Отгружен",
+  "goodsNumber": 48,
+  "productsNumber": 8,
+  "createdAt": 1756981953000,
+  "createdDateTime": "2025-09-04T13:32:33+03:00",
+  "deadlineAt": 1758370860000,
+  "deadlineDateTime": "2025-09-20T15:21:00+03:00",
+  "storeUntil": 1758758400000,
+  "storeUntilDateTime": "2025-09-25T03:00:00+03:00",
+  "userStartPicked": "vzadorozhny",
+  "currencySymbol": "RUB",
+  "totalPrice": "164604.00",
+  "products": [
+    {
+      "id": "000008",
+      "productCode": "1000651647",
+      "productName": "Наклейки Acoola",
+      "sku": "20206540037_0067648",
+      "categories": [
+        "Канцелярия, книги, мультимедиа",
+        "Книги",
+        "Досуг и творчество",
+        "Наклейки"
+      ],
+      "price": "0.00",
+      "store": -67,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "4680174024635"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/Dj5101ky-Am0FrdqP2KUDICQBNgOFtQVIuFqPZMa0RE=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/4K5HI0j_Ih3hmIiFt0GCVxQ6ewL4TP9DBWwCj3-b8Dg=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/4K5HI0j_Ih3hmIiFt0GCVxQ6ewL4TP9DBWwCj3-b8Dg=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/4K5HI0j_Ih3hmIiFt0GCVxQ6ewL4TP9DBWwCj3-b8Dg=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "ACOOLA",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "book": {
+        "ageCategory": null,
+        "subCategory": "Досуг и творчество"
+      },
+      "tnp1": "X",
+      "vendorCode": "0175055173",
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTA0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTIz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTI1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTI2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTI3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTI4",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTI5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTMw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTMx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTMy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTMz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTM0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTM1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTM2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTM3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTM5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQ0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQ1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQ2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2NTQ3"
+      ]
+    },
+    {
+      "id": "000007",
+      "productCode": "1000652172",
+      "productName": "Молоко сухое Иван-поле обезжиренное 10 л",
+      "sku": "30162229",
+      "categories": [
+        "Питание",
+        "Правильное питание",
+        "Напитки",
+        "Вместо молока"
+      ],
+      "price": "0.00",
+      "store": -44,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "6942301000331"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/GdOanzLe1CdWMMOPVcR9eZcMy_9B7spGO1nQ1eCaJXY=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/pI_zLojwYMGmquUycEpFcz7YD7PxfnLxmHzmpTywF_I=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/pI_zLojwYMGmquUycEpFcz7YD7PxfnLxmHzmpTywF_I=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/pI_zLojwYMGmquUycEpFcz7YD7PxfnLxmHzmpTywF_I=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/mvGwMmheFy5afJ_thi9zngE0WBJLSGvK9S0FPfa65uc=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/mvGwMmheFy5afJ_thi9zngE0WBJLSGvK9S0FPfa65uc=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/mvGwMmheFy5afJ_thi9zngE0WBJLSGvK9S0FPfa65uc=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/ehtIR7FzkUK8CoHxXyhCNfRT1Pncz02lpmDeuufNrs4=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/ehtIR7FzkUK8CoHxXyhCNfRT1Pncz02lpmDeuufNrs4=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/ehtIR7FzkUK8CoHxXyhCNfRT1Pncz02lpmDeuufNrs4=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/zUf9p_1ycap9WjcOo-lTzU2HQBTyyK2cC0Oe0Qq_h2A=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/zUf9p_1ycap9WjcOo-lTzU2HQBTyyK2cC0Oe0Qq_h2A=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/zUf9p_1ycap9WjcOo-lTzU2HQBTyyK2cC0Oe0Qq_h2A=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/VArJAat-wVxj98ZXrzOAUs0LCT3RLTu09t8yl3s6QSA=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/VArJAat-wVxj98ZXrzOAUs0LCT3RLTu09t8yl3s6QSA=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/VArJAat-wVxj98ZXrzOAUs0LCT3RLTu09t8yl3s6QSA=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/sOoW8ngkns8sRYHeEuIM3OUSjz9eCcYZL9pm3YFoI9w=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/sOoW8ngkns8sRYHeEuIM3OUSjz9eCcYZL9pm3YFoI9w=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/sOoW8ngkns8sRYHeEuIM3OUSjz9eCcYZL9pm3YFoI9w=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Иван-поле",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "tnp1": "X",
+      "vendorCode": "0175032347",
+      "markcodes": [
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5NaGJOHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS5jO1VLHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS8qUFVnHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS8+OTJTHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNS9fK1dHHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTA0UEpnHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTBEcmNzHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTBmZzBBHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTBxVmVaHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTErOUFiHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTE4Yk86HTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTE9ZHluHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTFRWktXHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTJha2E+HTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTJxMEtJHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTMtOWZKHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTNWdVRPHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTNzZGZVHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTRWZExyHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTUoZ3AmHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTVybWllHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTc7ZkxPHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTdKam8nHTkzZEdWeg==",
+        "MDEwNjk0MjMwMTAwMDMzMTIxNTdVMDY9HTkzZEdWeg=="
+      ]
+    },
+    {
+      "id": "000001",
+      "productCode": "126194",
+      "productName": "Наб нагрудников CB хлопковые 3шт 2/103",
+      "sku": "2/103",
+      "categories": [
+        "Кормление и уход",
+        "Средства для кормления",
+        "Слюнявчики",
+        "Слюнявчики текстильн"
+      ],
+      "price": "123.00",
+      "store": 28,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "5903407021034",
+        "2900003928456"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/c7-RNtI4MKyM29P4LhPP43tDk5At4Cx-D5unHaHt_bM=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/c7-RNtI4MKyM29P4LhPP43tDk5At4Cx-D5unHaHt_bM=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/c7-RNtI4MKyM29P4LhPP43tDk5At4Cx-D5unHaHt_bM=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/82n4ZgA9rQ3Yg55wn0hH_sfhlfcIHBa2l4L6CmHiMrA=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/82n4ZgA9rQ3Yg55wn0hH_sfhlfcIHBa2l4L6CmHiMrA=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/82n4ZgA9rQ3Yg55wn0hH_sfhlfcIHBa2l4L6CmHiMrA=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/EPu84aawpaoRE1_6RfJJkpRFs0gBZxl8N7465JStZFo=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/EPu84aawpaoRE1_6RfJJkpRFs0gBZxl8N7465JStZFo=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/EPu84aawpaoRE1_6RfJJkpRFs0gBZxl8N7465JStZFo=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/WQ3ztt7mk8s2lWlGaDLSipY2XOv7s1NddvIspbQCOsI=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/WQ3ztt7mk8s2lWlGaDLSipY2XOv7s1NddvIspbQCOsI=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/WQ3ztt7mk8s2lWlGaDLSipY2XOv7s1NddvIspbQCOsI=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/N1knTFOrhxhi4b4c_mpd9WwS9bDdLMG7eI9BVcXzxsM=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/N1knTFOrhxhi4b4c_mpd9WwS9bDdLMG7eI9BVcXzxsM=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/N1knTFOrhxhi4b4c_mpd9WwS9bDdLMG7eI9BVcXzxsM=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/vim7lpsm2fj-6pr1k46qe0568lGB78klv2_sCpUms2A=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/vim7lpsm2fj-6pr1k46qe0568lGB78klv2_sCpUms2A=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/vim7lpsm2fj-6pr1k46qe0568lGB78klv2_sCpUms2A=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "CANPOL BABIES",
+      "priceType": "R",
+      "availableQty": 28,
+      "lastGrDate": "2025-09-04",
+      "currencySymbol": "RUB",
+      "marketplace": false
+    },
+    {
+      "id": "000002",
+      "productCode": "1000202657",
+      "productName": "Крем для груди Helan",
+      "sku": "38S",
+      "categories": [
+        "Кормление и уход",
+        "Товары для мамы",
+        "Уход за телом",
+        "Крем для тела"
+      ],
+      "price": "0.00",
+      "store": -11,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "8058774300194"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/AkPFbEBpFL_cOaKdABQdtBr7O01cwl0HcoCQ0pBCuQo=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/AkPFbEBpFL_cOaKdABQdtBr7O01cwl0HcoCQ0pBCuQo=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/AkPFbEBpFL_cOaKdABQdtBr7O01cwl0HcoCQ0pBCuQo=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/EfxdSEjjXhkm6LRhyOHKBEXTOZ-basS7sLZp57HBe-8=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/EfxdSEjjXhkm6LRhyOHKBEXTOZ-basS7sLZp57HBe-8=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/EfxdSEjjXhkm6LRhyOHKBEXTOZ-basS7sLZp57HBe-8=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/rz4WsQ-9ax_jGJ0m8OingxVXSmXYz9JFg-tZNGnSJzY=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/rz4WsQ-9ax_jGJ0m8OingxVXSmXYz9JFg-tZNGnSJzY=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/rz4WsQ-9ax_jGJ0m8OingxVXSmXYz9JFg-tZNGnSJzY=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/SFjwUenZ9ogHEJ9c9wqxA9KRB9fYGRxIC-iP8tkMxUE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/SFjwUenZ9ogHEJ9c9wqxA9KRB9fYGRxIC-iP8tkMxUE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/SFjwUenZ9ogHEJ9c9wqxA9KRB9fYGRxIC-iP8tkMxUE=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/niKC5YdQbgYpYbfi8rTskt9mBinV4MCxqiXECwQ4hLI=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/niKC5YdQbgYpYbfi8rTskt9mBinV4MCxqiXECwQ4hLI=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/niKC5YdQbgYpYbfi8rTskt9mBinV4MCxqiXECwQ4hLI=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/Iy9Hemb8HkUpEturo7C9Aj272IvZmc1nK3h9eDbYLk8=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/Iy9Hemb8HkUpEturo7C9Aj272IvZmc1nK3h9eDbYLk8=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/Iy9Hemb8HkUpEturo7C9Aj272IvZmc1nK3h9eDbYLk8=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Helan",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODAw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODAx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODAy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODAz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODA0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDExODA1"
+      ]
+    },
+    {
+      "id": "000005",
+      "productCode": "1000658364",
+      "productName": "Автокресло Nania",
+      "sku": "1064030071",
+      "categories": [
+        "Крупногабаритные товары",
+        "Автокресла",
+        "Автокресла",
+        "Автокр 0+/1(0-18кг)"
+      ],
+      "price": "0.00",
+      "store": -23,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "3507460224900"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/rtyZerxSX0cHOGXCmmOMmMN9GwqOpW4EoPyaAe8fnQY=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/rtyZerxSX0cHOGXCmmOMmMN9GwqOpW4EoPyaAe8fnQY=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/rtyZerxSX0cHOGXCmmOMmMN9GwqOpW4EoPyaAe8fnQY=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/ESij4MlcYZ8pghksResSWY053GQW290mSWLtGdFCZzw=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/ESij4MlcYZ8pghksResSWY053GQW290mSWLtGdFCZzw=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/ESij4MlcYZ8pghksResSWY053GQW290mSWLtGdFCZzw=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/N5MyTiFTRRDU7I7C-y5rViGaAKQVASx_YNADue_xJAc=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/N5MyTiFTRRDU7I7C-y5rViGaAKQVASx_YNADue_xJAc=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/N5MyTiFTRRDU7I7C-y5rViGaAKQVASx_YNADue_xJAc=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/K06ZA-J5aGKPD1zl9uY7W361Ri_UEzJhVdhwPfi6Kqs=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/K06ZA-J5aGKPD1zl9uY7W361Ri_UEzJhVdhwPfi6Kqs=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/K06ZA-J5aGKPD1zl9uY7W361Ri_UEzJhVdhwPfi6Kqs=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/yLoZIgM3zs7kty1pye68pgniLiERpW2oYwrdWG28av0=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/yLoZIgM3zs7kty1pye68pgniLiERpW2oYwrdWG28av0=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/yLoZIgM3zs7kty1pye68pgniLiERpW2oYwrdWG28av0=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/cyguqfxW0b7kLLr0fx9EvDKJCqza3GXXg6xSKxuKgho=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/cyguqfxW0b7kLLr0fx9EvDKJCqza3GXXg6xSKxuKgho=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/cyguqfxW0b7kLLr0fx9EvDKJCqza3GXXg6xSKxuKgho=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/b9MkxOW67sIPoLhVbw-w66YjV3Xm5fgi5Ala2pNg9vw=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/b9MkxOW67sIPoLhVbw-w66YjV3Xm5fgi5Ala2pNg9vw=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/b9MkxOW67sIPoLhVbw-w66YjV3Xm5fgi5Ala2pNg9vw=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/bxwrjsiZEJoeA8yRe4QG5i-Zhi_9rLwLmRWX1CpT28o=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/bxwrjsiZEJoeA8yRe4QG5i-Zhi_9rLwLmRWX1CpT28o=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/bxwrjsiZEJoeA8yRe4QG5i-Zhi_9rLwLmRWX1CpT28o=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/tSjrvF8xJ9CZumOz6LnhrGlOi9mlde5dirIXqujIvpE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/tSjrvF8xJ9CZumOz6LnhrGlOi9mlde5dirIXqujIvpE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/tSjrvF8xJ9CZumOz6LnhrGlOi9mlde5dirIXqujIvpE=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Nania",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "tnp1": "X",
+      "vendorCode": "0100003862",
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTkw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTkx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTky",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTkz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk4",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEyOTk5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDAw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDA2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDA3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDA4",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDA5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDEw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDEx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDEy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDEz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDE0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDE1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDE2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDEzMDE3"
+      ]
+    },
+    {
+      "id": "000003",
+      "productCode": "2295519001",
+      "productName": "Конверт для пеленания Summer I:Белый:Б/Р",
+      "sku": "58806",
+      "categories": [
+        "Одежда",
+        "Одежда для девочек",
+        "Для новорожденных",
+        "Конверты"
+      ],
+      "price": "0.00",
+      "store": -3,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "0012914588062",
+        "2900003928494",
+        "2900003932217"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/-XJkbD4Y3yR5vniBjpe29gDyjTIBYUCMCetu4Klw5vw=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/-XJkbD4Y3yR5vniBjpe29gDyjTIBYUCMCetu4Klw5vw=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/-XJkbD4Y3yR5vniBjpe29gDyjTIBYUCMCetu4Klw5vw=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/uV1h7gQfYSXC7NYWgt8mIXYQz-dtE0jJxGQJ8zG7CnE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/uV1h7gQfYSXC7NYWgt8mIXYQz-dtE0jJxGQJ8zG7CnE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/uV1h7gQfYSXC7NYWgt8mIXYQz-dtE0jJxGQJ8zG7CnE=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/byXt8KTJDwbi4_XErV69bs7rjw49Gf9qR_xGbChViWU=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/byXt8KTJDwbi4_XErV69bs7rjw49Gf9qR_xGbChViWU=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/byXt8KTJDwbi4_XErV69bs7rjw49Gf9qR_xGbChViWU=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/zqxA9xoxBFrgD3jho3ir7FGTxPbsmxVXBj6mtEBDvoM=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/zqxA9xoxBFrgD3jho3ir7FGTxPbsmxVXBj6mtEBDvoM=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/zqxA9xoxBFrgD3jho3ir7FGTxPbsmxVXBj6mtEBDvoM=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/K9Ef9LCFTxbieaKDFnd6VbCMzfLEGh9wTJemRn-t8sM=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/K9Ef9LCFTxbieaKDFnd6VbCMzfLEGh9wTJemRn-t8sM=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/K9Ef9LCFTxbieaKDFnd6VbCMzfLEGh9wTJemRn-t8sM=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/iZyRbMDNshCLD_cY0HJ3C9X8fYtOSIyFqg_P0GLx8rU=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/iZyRbMDNshCLD_cY0HJ3C9X8fYtOSIyFqg_P0GLx8rU=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/iZyRbMDNshCLD_cY0HJ3C9X8fYtOSIyFqg_P0GLx8rU=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/pr2MMcIA0qrwQXr9aTGZV1tyGsha3urVdE7mdsVrKlE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/pr2MMcIA0qrwQXr9aTGZV1tyGsha3urVdE7mdsVrKlE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/pr2MMcIA0qrwQXr9aTGZV1tyGsha3urVdE7mdsVrKlE=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/BgWokjLpW505KJu_kkP1ThDyqPWUoaeUeHTz1o42gCU=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/BgWokjLpW505KJu_kkP1ThDyqPWUoaeUeHTz1o42gCU=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/BgWokjLpW505KJu_kkP1ThDyqPWUoaeUeHTz1o42gCU=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Summer Infant",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true
+    },
+    {
+      "id": "000006",
+      "productCode": "2295520001",
+      "productName": "Конверт для пеленания Summer:Розовый:Б/Р",
+      "sku": "58796",
+      "categories": [
+        "Одежда",
+        "Одежда для девочек",
+        "Для новорожденных",
+        "Конверты"
+      ],
+      "price": "0.00",
+      "store": -22,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "0012914587966",
+        "2900003928500",
+        "2900003932224"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/PFHhNAUfiGpxr4RIwT4lj104Vw1Q_m-ZK3Dn0veT5VA=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/PFHhNAUfiGpxr4RIwT4lj104Vw1Q_m-ZK3Dn0veT5VA=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/PFHhNAUfiGpxr4RIwT4lj104Vw1Q_m-ZK3Dn0veT5VA=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/N3ycW7zfxM_kboY43xfUVSdEiqcCNwnrvFNvgKVUGYc=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/N3ycW7zfxM_kboY43xfUVSdEiqcCNwnrvFNvgKVUGYc=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/N3ycW7zfxM_kboY43xfUVSdEiqcCNwnrvFNvgKVUGYc=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/PaEiTo-HCgpQm57ddBLST318mICC2AAXsd6OteCQak4=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/PaEiTo-HCgpQm57ddBLST318mICC2AAXsd6OteCQak4=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/PaEiTo-HCgpQm57ddBLST318mICC2AAXsd6OteCQak4=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/7lh2Huo0PaB_tGbDaWUHXqkIpHYNrg6cgfpwWkf6u48=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/7lh2Huo0PaB_tGbDaWUHXqkIpHYNrg6cgfpwWkf6u48=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/7lh2Huo0PaB_tGbDaWUHXqkIpHYNrg6cgfpwWkf6u48=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/8hmoDIr1rZsieqTOuqZC4-fBoRFs6JXCXj9E3MWnzp4=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/8hmoDIr1rZsieqTOuqZC4-fBoRFs6JXCXj9E3MWnzp4=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/8hmoDIr1rZsieqTOuqZC4-fBoRFs6JXCXj9E3MWnzp4=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/lR5bFScv6RYnpVciWl5stDu9VEO68W_uLzzeCoiRRHQ=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/lR5bFScv6RYnpVciWl5stDu9VEO68W_uLzzeCoiRRHQ=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/lR5bFScv6RYnpVciWl5stDu9VEO68W_uLzzeCoiRRHQ=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/jN9nO97g-VvhmW6EV4CbKXhv10l1yZjzROTECvh8G6M=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/jN9nO97g-VvhmW6EV4CbKXhv10l1yZjzROTECvh8G6M=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/jN9nO97g-VvhmW6EV4CbKXhv10l1yZjzROTECvh8G6M=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/Wvmx3zxNyLCk8IQNhRbXUoPKM8F_aKJYhRzFD5gApLY=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/Wvmx3zxNyLCk8IQNhRbXUoPKM8F_aKJYhRzFD5gApLY=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/Wvmx3zxNyLCk8IQNhRbXUoPKM8F_aKJYhRzFD5gApLY=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Summer Infant",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "tnp1": "X",
+      "vendorCode": "0100003862",
+      "markcodes": [
+        "MDEwMjkwMDAwMzkyODUwMDIxNSV5K3ZtR1BZLWduQR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSFVQXlFTyhraiI8bh05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSFuZE53M1hENEh4Vh05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSJZaDZKPCdMRmZnax05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSJZckRySFlFblguKR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSJnTFV5PC4xRFBacx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSJpcy8mRUpMPlAvcR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSJ6PDx5ZD9PTW5OVx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSU0Vih5dUhDX1QyVB05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSU7ZkVtNm5HR0ZwTh05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSVFTXBxNGNFVGVGWR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSV0JlglZ0Y7ZXdZPx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSYncDlyZGshR046Xx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSYwKUJEWnF5NHJTax05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSZHJTQ9OklBZlpidx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSZNQl9sSy8wRGZ4YR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSZiSS4qaUFZWDU3Sx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNScxL293TFJrdCxmWB05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNScyUVZkK3FiRE1USR05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSdMaUV0ZyZnalpEbx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNSdpJzlBV212aVdMUx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNShPUlFYKGZBdkJYTx05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNShQVXBGbm5JV21Nax05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0",
+        "MDEwMjkwMDAwMzkzMjIyNDIxNShxWEFhVlRjVGZqaB05MUZGRDAdOTJ0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0dGVzdHRlc3R0ZXN0"
+      ]
+    },
+    {
+      "id": "000004",
+      "productCode": "2378272001",
+      "productName": "Пальто Concept Club:Чёрный:L",
+      "sku": "10200610103_0072187",
+      "categories": [
+        "Одежда",
+        "Одежда для женщин",
+        "Верхняя одежда",
+        "Пальто"
+      ],
+      "price": "0.00",
+      "store": -14,
+      "ordered": 6,
+      "picked": 0,
+      "barcodes": [
+        "4680174258429",
+        "2900003931869",
+        "2900003932392"
+      ],
+      "images": [
+        {
+          "original": "https://catalog-cdn.detmir.st/media/dk_Smem449pfRZe1GTu1q-EHCTC1IqRGojy6bOc3UPE=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/dk_Smem449pfRZe1GTu1q-EHCTC1IqRGojy6bOc3UPE=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/dk_Smem449pfRZe1GTu1q-EHCTC1IqRGojy6bOc3UPE=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/J9n6r0XWaeAdgIbbHKTY8DqXxnQAeq5jLDhxvHV4gb0=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/J9n6r0XWaeAdgIbbHKTY8DqXxnQAeq5jLDhxvHV4gb0=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/J9n6r0XWaeAdgIbbHKTY8DqXxnQAeq5jLDhxvHV4gb0=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/nD-CKnP5nOeFR7O2jSNaq6g1FcdFckeneRhlnvMm-rA=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/nD-CKnP5nOeFR7O2jSNaq6g1FcdFckeneRhlnvMm-rA=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/nD-CKnP5nOeFR7O2jSNaq6g1FcdFckeneRhlnvMm-rA=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/cbUhO_wWuwV0uobYA03SlF9hNFW93HCfbsOlqwZ-skM=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/cbUhO_wWuwV0uobYA03SlF9hNFW93HCfbsOlqwZ-skM=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/cbUhO_wWuwV0uobYA03SlF9hNFW93HCfbsOlqwZ-skM=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/6nloXYaOTffyInLbG-nm1dW-FUyganj3QApLysmqfwc=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/6nloXYaOTffyInLbG-nm1dW-FUyganj3QApLysmqfwc=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/6nloXYaOTffyInLbG-nm1dW-FUyganj3QApLysmqfwc=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/ABZ1bwZoVdx341G86q2EMoMWEfGAKMdtPDIUOUfXkQo=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/ABZ1bwZoVdx341G86q2EMoMWEfGAKMdtPDIUOUfXkQo=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/ABZ1bwZoVdx341G86q2EMoMWEfGAKMdtPDIUOUfXkQo=.webp?preset=site_product_gallery_r150"
+        },
+        {
+          "original": "https://catalog-cdn.detmir.st/media/4ZQI5ab35yKE00PoMkA0huhn2wZ3F1Qs6R2q-QhP1NA=.jpeg",
+          "web": "https://catalog-cdn.detmir.st/media/4ZQI5ab35yKE00PoMkA0huhn2wZ3F1Qs6R2q-QhP1NA=.webp?preset=site_product_gallery_r450",
+          "thumbnail": "https://catalog-cdn.detmir.st/media/4ZQI5ab35yKE00PoMkA0huhn2wZ3F1Qs6R2q-QhP1NA=.webp?preset=site_product_gallery_r150"
+        }
+      ],
+      "brand": "Concept Club",
+      "priceType": "W",
+      "currencySymbol": "RUB",
+      "marketplace": true,
+      "tnp1": "X",
+      "vendorCode": "0175001340",
+      "markcodes": [
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM4",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjM5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQx",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ3",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ4",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjQ5",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjUw",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjUy",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjUz",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjU0",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjU1",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjU2",
+        "MjQxMTEyMDEwMDAwMDAwMDAwMDAwMDE2MjU3",
+        "MjQxMTQxMDEwMDAwMDAwMDAwMDAwMDExMzg4"
+      ]
+    }
+  ],
+  "availableSectors": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2",
+    "D1",
+    "D2",
+    "E1",
+    "E2",
+    "SA1",
+    "SB1",
+    "SC1",
+    "SD1",
+    "SE1"
+  ],
+  "prepaid": true,
+  "replaceSoftCheck": false,
+  "prolongAllow": false
+}

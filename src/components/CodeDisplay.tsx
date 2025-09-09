@@ -79,7 +79,7 @@ function QRCodeDisplay({ data, size }: { data: string; size: number }) {
 }
 
 function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
-  const hasGS1 = data.includes('\\u001D') || data.includes('\u001D');
+  const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#');
   
   let processedData: string;
   let barcodeUrl: string;
@@ -91,20 +91,20 @@ function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
     processedData = data
       .replace(/\\u001[dD]/g, gs) 
       .replace(/\\u001D/g, gs)    
-      .replace(/\\u001d/g, gs);   
-
-    processedData = processedData;
+      .replace(/\\u001d/g, gs)
+      .replace(/#/g, gs);   
 
     console.log('Processed GS1 data:', processedData);
     
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
   } else {
-    // For simple numeric codes, use the data as-is
-    console.log('Processing simple numeric data:', data);
-    processedData = data;
+    // If no GS1 separators found, add gs at the beginning and end
+    console.log('Processing data without GS1 separators, adding gs wrapper:', data);
+    const gs = String.fromCharCode(29);
+    processedData = gs + data + gs;
     const encodedData = encodeURIComponent(processedData);
-    barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L`;
+    barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
   }
 
   console.log('Generated DataMatrix URL:', barcodeUrl);
