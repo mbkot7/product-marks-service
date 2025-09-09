@@ -78,33 +78,25 @@ function QRCodeDisplay({ data, size }: { data: string; size: number }) {
   );
 }
 
-// DataMatrix display using TEC-IT barcode service for КМЧЗ (GS1 codes)
 function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
-  // Check if data contains GS1 separators
   const hasGS1 = data.includes('\\u001D') || data.includes('\u001D');
   
   let processedData: string;
   let barcodeUrl: string;
   
   if (hasGS1) {
-    // Process GS1 data to handle separator characters correctly
     console.log('Processing GS1 data:', data);
-
-    // Define GS1 separator character (ASCII 29)
-    const gs = String.fromCharCode(29);
+    const gs = String.fromCharCode(29); 
     
-    // Replace Unicode escape sequences with actual GS1 separator character
     processedData = data
-      .replace(/\\u001[dD]/g, gs) // Handle \u001D and \u001d
-      .replace(/\\u001D/g, gs)    // Handle \u001D specifically
-      .replace(/\\u001d/g, gs);   // Handle \u001d specifically
+      .replace(/\\u001[dD]/g, gs) 
+      .replace(/\\u001D/g, gs)    
+      .replace(/\\u001d/g, gs);   
 
-    // Prepend GS1 separator to the beginning of the string for proper GS1 format
-    processedData = gs + processedData;
+    processedData = processedData;
 
     console.log('Processed GS1 data:', processedData);
     
-    // For TEC-IT service with GS1 data
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
   } else {

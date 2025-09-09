@@ -25,12 +25,15 @@ export class CodeGenerator {
     try {
       const hasGS1 = data.includes('\\u001D') || data.includes('\u001D');
       let processedData = data.trim();
+
+      const gs = String.fromCharCode(29);
       
       if (hasGS1) {
         processedData = processedData
-          .replace(/\\u001[dD]/g, String.fromCharCode(29))
-          .replace(/\\u001D/g, String.fromCharCode(29))
-          .replace(/\\u001d/g, String.fromCharCode(29));
+          .replace(/\\u001[dD]/g, gs)
+          .replace(/\\u001D/g, gs)
+          .replace(/\\u001d/g, gs);
+          processedData = processedData;
       }
       
       const encodedData = encodeURIComponent(processedData);
