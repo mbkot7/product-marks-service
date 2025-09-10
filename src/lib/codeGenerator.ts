@@ -21,22 +21,23 @@ export class CodeGenerator {
     }
   }
 
-  static async generateDataMatrix(data: string, size: number = 200): Promise<string> {
+  static async generateDataMatrix(data: string, size: number = 200, withSeparators: boolean = true): Promise<string> {
     try {
       const gs = String.fromCharCode(29);
       const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#') || data.includes(gs);
       let processedData = data.trim();
       
-      if (hasGS1) {
+      if (withSeparators && hasGS1) {
         processedData = processedData
           .replace(/\\u001[dD]/g, gs)
           .replace(/\\u001D/g, gs)
           .replace(/\\u001d/g, gs)
           .replace(/#/g, gs);
-      } else {
+      } else if (withSeparators && !hasGS1) {
         // If no GS1 separators found, add gs at the beginning and end
         processedData = gs + processedData + gs;
       }
+      // For КМДМ (withSeparators = false): use data as is without any separators
       
       const encodedData = encodeURIComponent(processedData);
       
@@ -56,8 +57,14 @@ export class CodeGenerator {
         'quiet=0'
       ];
       
-      if (hasGS1) {
+      if (withSeparators && hasGS1) {
         params.push('translate-esc=on');
+        params.push('eclevel=L');
+      } else if (withSeparators && !hasGS1) {
+        params.push('translate-esc=on');
+        params.push('eclevel=L');
+      } else {
+        // For КМДМ without separators
         params.push('eclevel=L');
       }
       
@@ -129,9 +136,9 @@ export class CodeGenerator {
   // Main method to generate appropriate code based on type
   static async generateCode(data: string, brandType: 'КМДМ' | 'КМЧЗ', size: number = 200): Promise<string> {
     if (brandType === 'КМДМ') {
-      return await this.generateQRCode(data, size);
+      return await this.generateDataMatrix(data, size, false); // КМДМ uses DataMatrix without separators
     } else {
-      return await this.generateDataMatrix(data, size);
+      return await this.generateDataMatrix(data, size, true); // КМЧЗ uses DataMatrix with separators
     }
   }
 }

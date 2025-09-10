@@ -152,7 +152,8 @@ export class PDFExportService {
 
         try {
           if (mark.brandType === 'КМДМ') {
-            const codeDataUrl = await CodeGenerator.generateQRCode(mark.brand, 100);
+            // КМДМ now uses DataMatrix without separators
+            const codeDataUrl = await CodeGenerator.generateDataMatrix(mark.brand, 100, false);
             
             pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
             
@@ -299,7 +300,8 @@ export class PDFExportService {
           const textY = y + 450;
           
           if (mark.brandType === 'КМДМ') {
-            zplCode += `^FO${x},${y}^BQN,2,18^FDLA,${mark.brand}^FS\n`;
+            // КМДМ now uses DataMatrix without separators
+            zplCode += `^FO${x},${y} ^BXN,18,200,Y,N,N^FD${mark.brand}^FS\n`;
           } else {
             zplCode += `^FO${x},${y} ^BXN,10,200,Y,N,N^FD${mark.brand}^FS\n`;
           }

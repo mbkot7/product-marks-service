@@ -1,5 +1,3 @@
-import { useState, useEffect } from 'react';
-import { CodeGenerator } from '@/lib/codeGenerator';
 
 interface CodeDisplayProps {
   data: string;
@@ -10,83 +8,22 @@ interface CodeDisplayProps {
 
 export function CodeDisplay({ data, brandType, size = 80 }: CodeDisplayProps) {
   if (brandType === 'КМЧЗ') {
-    return <DataMatrixDisplay data={data} size={size} />; // КМЧЗ uses DataMatrix with GS1
+    return <DataMatrixDisplay data={data} size={size} withSeparators={true} />; // КМЧЗ uses DataMatrix with GS1
   } else { // КМДМ
-    return <QRCodeDisplay data={data} size={size} />; // КМДМ uses local QR code
+    return <DataMatrixDisplay data={data} size={size} withSeparators={false} />; // КМДМ uses DataMatrix without separators
   }
 }
 
-// QR Code display using local generation for КМДМ (simple numeric codes)
-function QRCodeDisplay({ data, size }: { data: string; size: number }) {
-  const [codeUrl, setCodeUrl] = useState<string>('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>('');
 
-  useEffect(() => {
-    const generateCode = async () => {
-      setLoading(true);
-      setError('');
-      
-      try {
-        console.log(`Generating QR code for data: ${data.substring(0, 50)}...`);
-        const url = await CodeGenerator.generateQRCode(data, size);
-        setCodeUrl(url);
-        console.log('Successfully generated QR code');
-      } catch (err) {
-        console.error('Error generating QR code:', err);
-        setError('Failed to generate QR code');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    generateCode();
-  }, [data, size]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center border rounded bg-gray-50" style={{ width: size, height: size }}>
-        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div 
-        className="flex flex-col items-center justify-center bg-gray-100 border rounded"
-        style={{ width: size, height: size }}
-      >
-        <span className="text-xs text-red-500">Error</span>
-        <span className="text-xs text-gray-500">QR</span>
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <img 
-        src={codeUrl}
-        alt="QR Code"
-        className="border rounded"
-        style={{ width: size, height: size }}
-        onError={() => {
-          console.error('QR code failed to display');
-        }}
-      />
-    </div>
-  );
-}
-
-function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
+function DataMatrixDisplay({ data, size, withSeparators }: { data: string; size: number; withSeparators: boolean }) {
   const gs = String.fromCharCode(29);
   const hasGS1 = data.includes('\\u001D') || data.includes('\u001D') || data.includes('#') || data.includes(gs);
   
   let processedData: string;
   let barcodeUrl: string;
   
-  if (hasGS1) {
-    console.log('Processing GS1 data:', data);
+  if (withSeparators && hasGS1) {
+    console.log('Processing GS1 data with separators:', data);
     const gs = String.fromCharCode(29); 
     
     processedData = data
@@ -99,13 +36,19 @@ function DataMatrixDisplay({ data, size }: { data: string; size: number }) {
     
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
-  } else {
+  } else if (withSeparators && !hasGS1) {
     // If no GS1 separators found, add gs at the beginning and end
     console.log('Processing data without GS1 separators, adding gs wrapper:', data);
     const gs = String.fromCharCode(29);
     processedData = gs + data + gs;
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
+  } else {
+    // For КМДМ: use data as is without any separators
+    console.log('Processing КМДМ data without separators:', data);
+    processedData = data;
+    const encodedData = encodeURIComponent(processedData);
+    barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&eclevel=L`;
   }
 
   console.log('Generated DataMatrix URL:', barcodeUrl);
