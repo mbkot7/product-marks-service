@@ -74,13 +74,9 @@ export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<
 }
 
 // GitHub token for authenticated requests
-const GITHUB_TOKEN = (import.meta as any).env?.VITE_GITHUB_TOKEN || (() => {
-  const chars = [103,104,112,95,105,50,111,70,103,102,104,75,54,77,56,84,105,66,69,109,118,75,112,74,101,49,82,56,86,71,121,114,103,54,49,66,107,118,68,98];
-  return String.fromCharCode(...chars);
-})();
-
 function getGitHubToken(): string | null {
-  return GITHUB_TOKEN || null;
+  const token = import.meta.env.VITE_GITHUB_TOKEN;
+  return token && typeof token === 'string' && token.trim() !== '' ? token : null;
 }
 
 // Interfaces for Gist data
@@ -102,6 +98,12 @@ interface GistData {
 
 // Create a GitHub Gist with the marks data
 export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<string> {
+  // Check if token is available
+  const token = getGitHubToken();
+  if (!token) {
+    throw new Error('GitHub token is not configured. Please set VITE_GITHUB_TOKEN in your .env file.');
+  }
+
   const timestamp = new Date().toISOString();
   const metadata: GistMetadata = {
     timestamp,
@@ -124,15 +126,11 @@ export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<s
   };
 
   try {
-    const token = getGitHubToken();
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'Accept': 'application/vnd.github.v3+json'
+      'Accept': 'application/vnd.github.v3+json',
+      'Authorization': `token ${token}`
     };
-
-    if (token) {
-      headers['Authorization'] = `token ${token}`;
-    }
 
     const response = await fetch('https://api.github.com/gists', {
       method: 'POST',
@@ -142,7 +140,19 @@ export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<s
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(`GitHub API error: ${response.status} - ${errorData.message || response.statusText}`);
+      let errorMessage = `GitHub API error: ${response.status}`;
+      
+      if (response.status === 401) {
+        errorMessage = 'GitHub token is invalid or expired. Please check your VITE_GITHUB_TOKEN.';
+      } else if (response.status === 403) {
+        errorMessage = 'GitHub API rate limit exceeded or token lacks gist scope. Please check your token permissions.';
+      } else if (errorData.message) {
+        errorMessage = `GitHub API error: ${errorData.message}`;
+      } else {
+        errorMessage = `GitHub API error: ${response.statusText}`;
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const gist = await response.json();
@@ -156,7 +166,10 @@ export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<s
     return url.toString();
   } catch (error) {
     console.error('Failed to create Gist:', error);
-    throw new Error(`Failed to create Gist: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('Failed to create Gist: Unknown error');
   }
 }
 
@@ -173,6 +186,7 @@ export async function loadFromGist(): Promise<ProductMarkDetail[] | null> {
       'Accept': 'application/vnd.github.v3+json'
     };
 
+    // Token is optional for reading public gists, but recommended for rate limits
     if (token) {
       headers['Authorization'] = `token ${token}`;
     }
@@ -182,7 +196,13 @@ export async function loadFromGist(): Promise<ProductMarkDetail[] | null> {
     });
 
     if (!response.ok) {
-      console.error('Failed to fetch Gist:', response.status, response.statusText);
+      if (response.status === 404) {
+        console.error('Gist not found:', gistId);
+      } else if (response.status === 401 || response.status === 403) {
+        console.error('Failed to fetch Gist: Authentication issue. Token may be invalid or expired.');
+      } else {
+        console.error('Failed to fetch Gist:', response.status, response.statusText);
+      }
       return null;
     }
 
