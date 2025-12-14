@@ -91,7 +91,6 @@ export class PDFExportService {
     }
   }
 
-  // Export with grid layout of QR/DataMatrix codes
   static async exportProductMarksWithImages(productMarks: ProductMarkDetail[], title: string = 'Product Marks Report') {
     try {
       const pdf = new jsPDF({
@@ -152,7 +151,6 @@ export class PDFExportService {
 
         try {
           if (mark.brandType === 'КМДМ') {
-            // КМДМ now uses DataMatrix without separators
             const codeDataUrl = await CodeGenerator.generateDataMatrix(mark.brand, 100, false);
             
             pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
@@ -198,15 +196,12 @@ export class PDFExportService {
             }
 
             if (codeDataUrl) {
-              // Add the DataMatrix image
               pdf.addImage(codeDataUrl, 'PNG', x, currentY, codeSize, codeSize);
               
-              // Add the code below the image (for КМЧЗ, show only up to \u001D)
               pdf.setFontSize(6);
               pdf.setTextColor(80, 80, 80);
               let codeText = mark.brand;
               
-              // For КМЧЗ, truncate at \u001D or \u001d
               if (mark.brandType === 'КМЧЗ') {
                 const gs1Index = codeText.search(/\\u001[dD]|\u001D/);
                 if (gs1Index !== -1) {
@@ -218,7 +213,6 @@ export class PDFExportService {
               pdf.text(codeText, centerX - (codeText.length * 1.5), currentY + codeSize + 4);
               pdf.setTextColor(0, 0, 0);
             } else {
-              // Show truncated data as fallback
               pdf.setFontSize(6);
               pdf.setTextColor(100, 100, 100);
               const centerX = x + codeSize / 2;
@@ -228,7 +222,6 @@ export class PDFExportService {
             }
           }
         } catch (imgError) {
-          // Show truncated data as final fallback
           pdf.setFontSize(6);
           pdf.setTextColor(100, 100, 100);
           const centerX = x + codeSize / 2;
@@ -300,7 +293,6 @@ export class PDFExportService {
           const textY = y + 450;
           
           if (mark.brandType === 'КМДМ') {
-            // КМДМ now uses DataMatrix without separators
             zplCode += `^FO${x},${y} ^BXN,18,200,Y,N,N^FD${mark.brand}^FS\n`;
           } else {
             zplCode += `^FO${x},${y} ^BXN,10,200,Y,N,N^FD${mark.brand}^FS\n`;
@@ -438,15 +430,13 @@ export class PDFExportService {
 
       let y = 20;
       const pageHeight = 270;
-      const itemHeight = 60; // Height per product mark item
+      const itemHeight = 60;
 
-      // Add title
       pdf.setFontSize(16);
       pdf.setFont('courier', 'normal');
       pdf.text(title, 20, y);
       y += 15;
 
-      // Add timestamp
       pdf.setFontSize(10);
       pdf.setFont('courier', 'normal');
       const now = new Date().toLocaleString('ru-RU');
@@ -454,16 +444,13 @@ export class PDFExportService {
       y += 15;
 
       for (const mark of productMarks) {
-        // Check if we need a new page
         if (y + itemHeight > pageHeight) {
           pdf.addPage();
           y = 20;
         }
 
-        // Draw border around item
         pdf.rect(20, y, 170, itemHeight);
 
-        // Product info
         pdf.setFontSize(12);
         pdf.setFont('courier', 'normal');
         pdf.text(`Product: ${mark.product || 'N/A'}`, 25, y + 10);
@@ -475,16 +462,13 @@ export class PDFExportService {
         pdf.text(`Brand Type: ${mark.brandType}`, 25, y + 34);
         pdf.text(`Status: ${mark.status}`, 25, y + 42);
         
-        // Brand (truncated)
         const brand = mark.brand.length > 30 ? mark.brand.substring(0, 30) + '...' : mark.brand;
         pdf.text(`Brand: ${brand}`, 25, y + 50);
 
-        // DataMatrix info (right side)
         pdf.setFontSize(8);
         pdf.setFont('courier', 'normal');
         pdf.text('DataMatrix:', 120, y + 10);
         
-        // Split datamatrix into multiple lines
         const datamatrix = mark.datamatrix;
         const maxCharsPerLine = 25;
         const lines = [] as string[];
@@ -499,7 +483,6 @@ export class PDFExportService {
         y += itemHeight + 10;
       }
 
-      // Add footer
       const pageCount = pdf.getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
         pdf.setPage(i);
@@ -508,7 +491,6 @@ export class PDFExportService {
         pdf.text(`Total records: ${productMarks.length}`, 20, 285);
       }
 
-      // Download the PDF
       const fileName = `product-marks-detailed-${new Date().toISOString().split('T')[0]}.pdf`;
       pdf.save(fileName);
 

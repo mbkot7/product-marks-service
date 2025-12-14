@@ -1,18 +1,15 @@
 import { ProductMarkDetail } from '@/types/ProductMark';
 
-// Encode JSON safely into a compact base64 string suitable for URLs
 export function encodeStateToParam(marks: ProductMarkDetail[]): string {
   const json = JSON.stringify(marks);
-  // Encode as UTF-8 safe base64
   const utf8 = encodeURIComponent(json).replace(/%([0-9A-F]{2})/g, (_, p1) => String.fromCharCode(parseInt(p1, 16)));
   const b64 = btoa(utf8);
-  // URL-safe base64 (optional)
   return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
 }
 
 export function decodeStateFromParam(param: string): ProductMarkDetail[] | null {
   try {
-    // Restore padding for base64
+    // Restore padding for base64 encoding
     let b64 = param.replace(/-/g, '+').replace(/_/g, '/');
     while (b64.length % 4 !== 0) b64 += '=';
     const utf8 = atob(b64);
@@ -25,7 +22,7 @@ export function decodeStateFromParam(param: string): ProductMarkDetail[] | null 
 }
 
 export function createShareLink(marks: ProductMarkDetail[]): string {
-  const base = `${window.location.origin}${window.location.pathname}`; // keeps /product-marks-service/
+  const base = `${window.location.origin}${window.location.pathname}`;
   const s = encodeStateToParam(marks);
   const url = new URL(base);
   url.searchParams.set('s', s);
@@ -39,10 +36,8 @@ export function extractStateFromLocation(): ProductMarkDetail[] | null {
   return decodeStateFromParam(s);
 }
 
-// Shorten URL using TinyURL API (free, no registration required)
 export async function shortenUrl(longUrl: string): Promise<string> {
   try {
-    // TinyURL API endpoint (free, no auth required)
     const apiUrl = `https://tinyurl.com/api-create.php?url=${encodeURIComponent(longUrl)}`;
     
     const response = await fetch(apiUrl);
@@ -53,8 +48,6 @@ export async function shortenUrl(longUrl: string): Promise<string> {
     
     const shortUrl = await response.text();
     
-    // TinyURL returns the short URL as plain text
-    // If it starts with 'http', it's successful
     if (shortUrl.startsWith('http')) {
       return shortUrl.trim();
     } else {
@@ -62,24 +55,20 @@ export async function shortenUrl(longUrl: string): Promise<string> {
     }
   } catch (error) {
     console.warn('URL shortening failed:', error);
-    // Return original URL as fallback
     return longUrl;
   }
 }
 
-// Create and shorten share link in one function
 export async function createShortShareLink(marks: ProductMarkDetail[]): Promise<string> {
   const longUrl = createShareLink(marks);
   return await shortenUrl(longUrl);
 }
 
-// GitHub token for authenticated requests
 function getGitHubToken(): string | null {
   const token = import.meta.env.VITE_GITHUB_TOKEN;
   return token && typeof token === 'string' && token.trim() !== '' ? token : null;
 }
 
-// Interfaces for Gist data
 interface GistMetadata {
   timestamp: string;
   markCount: number;
@@ -96,9 +85,7 @@ interface GistData {
   };
 }
 
-// Create a GitHub Gist with the marks data
 export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<string> {
-  // Check if token is available
   const token = getGitHubToken();
   if (!token) {
     throw new Error('GitHub token is not configured. Please set VITE_GITHUB_TOKEN in your .env file.');
@@ -158,7 +145,6 @@ export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<s
     const gist = await response.json();
     const gistId = gist.id;
     
-    // Create shareable URL with gist parameter
     const base = `${window.location.origin}${window.location.pathname}`;
     const url = new URL(base);
     url.searchParams.set('gist', gistId);
@@ -167,13 +153,12 @@ export async function createGistShareLink(marks: ProductMarkDetail[]): Promise<s
   } catch (error) {
     console.error('Failed to create Gist:', error);
     if (error instanceof Error) {
-      throw error;
+      throw new Error(`Failed to create Gist: ${error.message}`);
     }
     throw new Error('Failed to create Gist: Unknown error');
   }
 }
 
-// Load data from a GitHub Gist
 export async function loadFromGist(): Promise<ProductMarkDetail[] | null> {
   const url = new URL(window.location.href);
   const gistId = url.searchParams.get('gist');
@@ -186,7 +171,6 @@ export async function loadFromGist(): Promise<ProductMarkDetail[] | null> {
       'Accept': 'application/vnd.github.v3+json'
     };
 
-    // Token is optional for reading public gists, but recommended for rate limits
     if (token) {
       headers['Authorization'] = `token ${token}`;
     }
@@ -222,7 +206,6 @@ export async function loadFromGist(): Promise<ProductMarkDetail[] | null> {
   }
 }
 
-// Smart share link creation - always use Gist
 export async function createSmartShareLink(marks: ProductMarkDetail[]): Promise<{
   url: string;
   method: 'gist';
@@ -236,6 +219,15 @@ export async function createSmartShareLink(marks: ProductMarkDetail[]): Promise<
     };
   } catch (error) {
     console.error('Gist creation failed:', error);
+      if (error instanceof Error) {
+      if (error.message.includes('token') || 
+          error.message.includes('VITE_GITHUB_TOKEN') || 
+          error.message.includes('not configured') ||
+          error.message.includes('invalid or expired')) {
+        throw error;
+      }
+      throw error;
+    }
     throw new Error('Failed to create Gist. Please try again.');
   }
 }

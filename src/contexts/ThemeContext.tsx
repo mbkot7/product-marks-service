@@ -34,13 +34,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     
     console.log('ThemeContext: Applying theme', theme, 'to document element');
     
-    // Remove all theme classes
     root.classList.remove('light', 'dark', 'high-contrast');
     
-    // Add current theme class
     root.classList.add(theme);
     
-    // Also set data attribute for more specific targeting
     root.setAttribute('data-theme', theme);
     
     console.log('ThemeContext: Document classes after change:', root.className);

@@ -50,7 +50,6 @@ export function decodeBase64(base64String: string): string {
     const decoded = atob(base64String);
     console.log('Decoded result before GS replacement:', decoded);
     
-    // Заменяем символ GS (ASCII 29) на \u001D
     const gs = String.fromCharCode(29);
     const result = decoded.replace(new RegExp(gs, 'g'), '\\u001D');
     
@@ -58,7 +57,7 @@ export function decodeBase64(base64String: string): string {
     return result;
   } catch (error) {
     console.error('Error decoding base64:', error, 'Original string:', base64String);
-    return base64String; // Возвращаем исходную строку если декодирование не удалось
+    return base64String;
   }
 }
 
@@ -66,12 +65,10 @@ export function decodeBase64(base64String: string): string {
  * Определяет тип марки (КМДМ или КМЧЗ) на основе содержимого
  */
 export function determineBrandType(decodedMark: string): 'КМДМ' | 'КМЧЗ' {
-  // Если содержит GS1 разделители или символы, это КМЧЗ
   const gs = String.fromCharCode(29);
   if (decodedMark.includes('\u001D') || decodedMark.includes('\\u001D') || decodedMark.includes('#') || decodedMark.includes(gs)) {
     return 'КМЧЗ';
   }
-  // Иначе это КМДМ
   return 'КМДМ';
 }
 
@@ -86,7 +83,6 @@ export function convertToProductMarks(importedProducts: ImportedProduct[]): Prod
   importedProducts.forEach((product, productIndex) => {
     console.log(`Product ${productIndex}: id=${product.id}, tnp1=${product.tnp1}, markcodes=${product.markcodes?.length || 0}`);
     
-    // Обрабатываем только товары с tnp1: "X" и наличием марок
     if (product.tnp1 === 'X' && product.markcodes && product.markcodes.length > 0) {
       console.log(`Processing product ${product.id} with ${product.markcodes.length} marks`);
       
@@ -96,7 +92,6 @@ export function convertToProductMarks(importedProducts: ImportedProduct[]): Prod
         const decodedMark = decodeBase64(markCode);
         const brandType = determineBrandType(decodedMark);
         
-        // Берем первый штрих-код из массива
         const barcode = product.barcodes[0] || '';
         
         console.log(`Creating product mark:`, {
@@ -173,19 +168,16 @@ export function validateImportData(data: any): data is ImportResponse | Response
     return false;
   }
   
-  // Проверяем, что есть массив products
   if (!Array.isArray(data.products)) {
     console.log('Validation failed: products is not an array, it is:', typeof data.products);
     return false;
   }
   
-  // Проверяем, что массив products не пустой
   if (data.products.length === 0) {
     console.log('Validation failed: products array is empty');
     return false;
   }
   
-  // Проверяем структуру каждого продукта
   const isValid = data.products.every((product: any, index: number) => {
     console.log(`Validating product ${index}:`, product);
     
@@ -194,8 +186,8 @@ export function validateImportData(data: any): data is ImportResponse | Response
       hasId: typeof product.id === 'string',
       hasProductCode: typeof product.productCode === 'string',
       hasBarcodes: Array.isArray(product.barcodes),
-      hasVendorCode: !product.vendorCode || typeof product.vendorCode === 'string', // vendorCode не обязателен
-      hasMarkcodes: !product.markcodes || Array.isArray(product.markcodes) // markcodes не обязательны
+      hasVendorCode: !product.vendorCode || typeof product.vendorCode === 'string',
+      hasMarkcodes: !product.markcodes || Array.isArray(product.markcodes)
     };
     
     console.log(`Product ${index} checks:`, checks);

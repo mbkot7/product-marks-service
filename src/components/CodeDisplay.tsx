@@ -8,9 +8,9 @@ interface CodeDisplayProps {
 
 export function CodeDisplay({ data, brandType, size = 80 }: CodeDisplayProps) {
   if (brandType === 'КМЧЗ') {
-    return <DataMatrixDisplay data={data} size={size} withSeparators={true} />; // КМЧЗ uses DataMatrix with GS1
-  } else { // КМДМ
-    return <DataMatrixDisplay data={data} size={size} withSeparators={false} />; // КМДМ uses DataMatrix without separators
+    return <DataMatrixDisplay data={data} size={size} withSeparators={true} />;
+  } else {
+    return <DataMatrixDisplay data={data} size={size} withSeparators={false} />;
   }
 }
 
@@ -37,14 +37,12 @@ function DataMatrixDisplay({ data, size, withSeparators }: { data: string; size:
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
   } else if (withSeparators && !hasGS1) {
-    // If no GS1 separators found, add gs at the beginning and end
     console.log('Processing data without GS1 separators, adding gs wrapper:', data);
     const gs = String.fromCharCode(29);
     processedData = gs + data + gs;
     const encodedData = encodeURIComponent(processedData);
     barcodeUrl = `https://barcode.tec-it.com/barcode.ashx?data=${encodedData}&code=DataMatrix&translate-esc=on&eclevel=L`;
   } else {
-    // For КМДМ: use data as is without any separators
     console.log('Processing КМДМ data without separators:', data);
     processedData = data;
     const encodedData = encodeURIComponent(processedData);
@@ -53,7 +51,6 @@ function DataMatrixDisplay({ data, size, withSeparators }: { data: string; size:
 
   console.log('Generated DataMatrix URL:', barcodeUrl);
 
-  // Create a safe SVG fallback using encodeURIComponent instead of btoa
   const fallbackSvg = `data:image/svg+xml,${encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
       <rect width="100%" height="100%" fill="#f3f4f6"/>

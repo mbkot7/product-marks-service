@@ -59,7 +59,6 @@ export const storage = {
     const newMarks: ProductMarkDetail[] = [];
     
     datamatrixes.forEach(inputCode => {
-      // Determine brand type based on content
       // КМЧЗ: contains \u001D or other GS1 identifiers or parentheses 
       // КМДМ: pure numeric codes
       const hasGS1Separator = inputCode.includes('\\u001D') || inputCode.includes('\u001D');
@@ -71,9 +70,7 @@ export const storage = {
       
       console.log(`Code: ${inputCode}, Type: ${brandType}, hasGS1: ${hasGS1Separator}, hasParens: ${hasParentheses}, hasLetters: ${hasLetters}, isNumeric: ${isNumericOnly}`);
       
-      // Brand column should show the full input code for display
-      // Datamatrix will be used only for generating QR/DataMatrix images
-      const brand = inputCode.trim(); // Always use full code in Brand column
+      const brand = inputCode.trim();
       
       if (!existingBrands.has(brand)) {
         const newMark: ProductMarkDetail = {
@@ -82,8 +79,8 @@ export const storage = {
           barcode: '',
           supplierCode: '',
           brandType,
-          brand, // This goes to "Марка" column
-          datamatrix: inputCode, // This goes to "Datamatrix" column
+          brand,
+          datamatrix: inputCode,
           status: 'В обороте',
           createdAt: new Date().toISOString(),
         };
